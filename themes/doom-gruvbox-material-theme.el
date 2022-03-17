@@ -30,13 +30,13 @@ determine the exact padding."
   :type '(choice integer boolean))
 
 (defcustom doom-gruvbox-material-background nil
-  "Choice between \"soft\", \"medium\" and \"hard\" background contrast.
+  "Choose between \"soft\", \"medium\" and \"hard\" background contrast.
 Defaults to \"soft\""
   :group 'doom-gruvbox-material-theme
   :type 'string)
 
 (defcustom doom-gruvbox-material-palette nil
-  "Choice between \"material\", \"mix\" and \"original\" color palette.
+  "Choose between \"material\", \"mix\" and \"original\" color palette.
 Defaults to \"material\""
   :group 'doom-gruvbox-material-theme
   :type 'string)
@@ -321,9 +321,7 @@ Defaults to \"material\""
    (isearch :foreground fg :background violet)
 
    ;; column indicator
-   (fill-column-indicator :foreground bg-alt :background bg-alt)
-   )
-
+   (fill-column-indicator :foreground bg-alt :background bg-alt))
   ;; --- extra variables ---------------------
   ()
   )
