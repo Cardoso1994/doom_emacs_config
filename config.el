@@ -31,20 +31,21 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "Cascadia Code PL" :size 23 :weight 'normal)
-      doom-unicode-font (font-spec :family "CaskaydiaCove Nerd Font")
+(setq doom-font (font-spec :family "JetBrains Mono" :size 22 :weight 'normal)
+      doom-unicode-font (font-spec :family "JetBrainsMono Nerd Font")
       doom-variable-pitch-font (font-spec :family "Bookerly"))
 
-;; (setq doom-font (font-spec :family "JetBrains Mono" :size 22 :weight 'normal)
+;; (setq doom-font (font-spec :family "Cascadia Code PL" :size 22 :weight 'normal)
       ;; doom-variable-pitch-font (font-spec :family "Guardi LT Roman"))
       ;; doom-variable-pitch-font (font-spec :family "Lato"))
-(setq doom-font-increment 1)
-(setq doom-big-font-increment 1)
+(setq doom-font-increment 1
+      doom-big-font-increment 1)
 
 ;; italics for comments and keywords
 (custom-set-faces!
   '(font-lock-comment-face :slant italic :weight light)
   '(font-lock-keyword-face :slant italic :weight semi-bold))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   Theme
@@ -55,8 +56,8 @@
 ;; (setq doom-theme 'doom-one)
 (defun mac/timed-theme (&optional morning-theme night-theme)
   "Change doom-theme depending on time of the day. Runs every hour."
-  (let* ((morning-theme (or morning-theme 'doom-gruvbox-light))
-         (night-theme (or night-theme 'doom-gruvbox))
+  (let* ((morning-theme (or morning-theme 'doom-solarized-light))
+         (night-theme (or night-theme 'doom-solarized-dark))
          (hour (nth 2 (decode-time (current-time))))
          (theme (cond ((<= 7 hour 17)   morning-theme)
                       (t                night-theme))))
@@ -67,22 +68,52 @@
     (run-at-time (format "%02d:%02d" (+ hour 1) 0) nil
                  #'mac/timed-theme morning-theme night-theme)))
 
+;; solarized dark configuration
+(custom-theme-set-faces! 'doom-solarized-dark
+  `(fill-column-indicator :foreground ,(doom-color 'bg-alt)
+                          :background ,(doom-color 'bg-alt))
+  `(font-lock-comment-face :foreground ,(doom-darken (doom-color 'teal) 0.15))
+  `(org-document-info-keyword :foreground ,(doom-darken
+                                            (doom-color 'green) 0.3))
+  `(org-drawer :foreground ,(doom-darken (doom-color 'yellow) 0.25))
+  `(org-link :foreground ,(doom-color 'teal) :underline t)
+  `(show-paren-match :foreground ,(doom-color 'fg)
+                     :background ,(doom-darken (doom-color 'orange) 0.5))
+  `(org-block-begin-line :foreground ,(doom-color 'fg-alt)
+                         :background ,(doom-color 'bg-alt))
+  `(org-level-1 :foreground ,(doom-color 'violet) :weight bold))
+
+;; solarized light configuration
+(custom-theme-set-faces! 'doom-solarized-light
+  `(fill-column-indicator :foreground ,(doom-color 'bg-alt)
+                          :background ,(doom-color 'bg-alt))
+  `(font-lock-comment-face :foreground ,(doom-lighten (doom-color 'teal) 0.1))
+  `(org-document-info-keyword :foreground ,(doom-lighten
+                                            (doom-color 'violet) 0.25))
+  `(org-meta-line :foreground ,(doom-lighten (doom-color 'magenta) 0.25))
+  `(org-link :foreground ,(doom-color 'teal) :underline t)
+  `(org-drawer :foreground ,(doom-lighten (doom-color 'orange) 0.35))
+  `(show-paren-match :foreground ,(doom-color 'fg)
+                     :background ,(doom-lighten (doom-color 'orange) 0.5)))
+
 ;; gruvbox-material contrast and palette options
-(setq doom-gruvbox-material-background  "medium"
-      doom-gruvbox-material-palette     "material")
+;; (setq doom-gruvbox-material-background  "medium"
+;;      doom-gruvbox-material-palette     "material")
 
 ;; gruvbox-material-light contrast and palette options
-(setq doom-gruvbox-material-light-background  "medium"
-      doom-gruvbox-material-light-palette     "material")
+;; (setq doom-gruvbox-material-light-background  "medium"
+;;       doom-gruvbox-material-light-palette     "material")
 
 ;; everforest contrast options
-(setq doom-everforest-background  "hard")
-(setq doom-everforest-light-background "soft")
+;; (setq doom-everforest-background  "hard")
+;; (setq doom-everforest-light-background "medium")
 
+;; (mac/timed-theme 'doom-gruvbox-material-light
 ;; (mac/timed-theme 'doom-everforest-light
 ;;                  'doom-everforest)
-(mac/timed-theme 'doom-gruvbox-material-light
-                 'doom-gruvbox-material)
+;;                  'doom-gruvbox-material)
+(mac/timed-theme 'doom-solarized-light
+                 'doom-solarized-dark)
 
 ;; enabling italics and bold font
 (after! doom-themes
@@ -96,7 +127,6 @@
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)
-
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
