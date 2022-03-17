@@ -17,6 +17,12 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Modeline
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq doom-modeline-buffer-file-name-style 'relative-to-project)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   Fonts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
@@ -165,16 +171,20 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   Conda
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(custom-set-variables '(conda-anaconda-home "/opt/miniconda3/"))
-(setq conda-env-home-directory (expand-file-name "/home/cardoso/.conda/"))
+
+(use-package! conda
+  :config
+  (custom-set-variables '(conda-anaconda-home "/opt/miniconda3/"))
+  (conda-env-initialize-eshell)
+  (setq conda-env-home-directory (expand-file-name "~/.conda/")))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   Evil
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq evil-split-window-below t
-      evil-split-window-right t
-      evil-want-fine-undo t)
+      evil-split-window-right t)
+;;       evil-want-fine-undo nil)
 ;; evil key bindings
 (map! :leader :n "f f"         #'evil-ex-search-forward)
 
@@ -188,17 +198,24 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; PDF tools
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq +latex-viewers '(zathura)
+      pdf-view-resize-factor 1.05)
+;; pdf tools midnight mode when opening a pdf
+(add-hook! 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org And Latex
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; pdf viewer
-(setq +latex-viewers '(zathura))
-;; using after! instead of use-package! because use-package! loads a package
+;; using after! instead of `use-package!' because `use-package!' loads a package
 ;; inmediately. accordingly to
 ;; https://www.reddit.com/r/DoomEmacs/comments/mby1ou/after_vs_usepackage/
 (after! org
   ;; org... aesthetics?
   (setq org-hide-block-startup t)               ;; all blocks folded by default
-  (setq org-image-actual-width 400)             ;; width of inline images
+  (setq org-image-actual-width 450)             ;; width of inline images
   (setq org-startup-folded t)                   ;; everything folded (overview)
 
   ;; latex export config
@@ -229,13 +246,13 @@
 ;; org key bindings
 (map! :map org-mode-map
       :leader
-      (:prefix "l"
-       (:desc "Export org to PDF latex"  :n "e" #'org-latex-export-to-pdf)
-       (:desc "Insert new label"         :n "l" #'org-ref-insert-label-link)
-       (:desc "Insert new reference"     :n "r" #'org-ref-insert-ref-link)
-       (:desc "Insert new citation"      :n "c" #'org-ref-insert-cite-link))
+      (:prefix ("l" . "org-latex")
+      :desc "Export org to PDF latex"  :n "e" #'org-latex-export-to-pdf
+      :desc "Insert new label"         :n "l" #'org-ref-insert-label-link
+      :desc "Insert new reference"     :n "r" #'org-ref-insert-ref-link
+      :desc "Insert new citation"      :n "c" #'org-ref-insert-cite-link)
       (:prefix "m"
-       (:desc "Edit special block"      :n "<" #'org-edit-special)))
+      :desc "Edit special block"      :n "<" #'org-edit-special))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -246,8 +263,10 @@
   :custom (org-roam-directory "/home/cardoso/second_brain")
   :config
   ;; If you're using a vertical completion framework, you might want a more informative completion interface
-  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (setq org-roam-node-display-template
+        (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   (org-roam-setup))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org-Agenda
@@ -306,4 +325,4 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-hook! 'prog-mode-hook #'rainbow-delimiters-mode)
 (add-hook! 'prog-mode-hook #'display-fill-column-indicator-mode) ;; 80 col high
-;; (add-hook! 'after-init-hook #'org-agenda-list)
+(add-hook! 'after-init-hook #'org-agenda-list)
