@@ -162,6 +162,31 @@
 
 (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode))
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;   Eshell
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun mac/eshell-default-prompt-fn ()
+  "Generate the prompt string for eshell.Based in the original doom's
+eshell-default-prompt-fn. Use for `eshell-prompt-function'."
+  (require 'shrink-path)
+  (concat (if (bobp) "" "\n")
+          (let ((pwd (eshell/pwd)))
+            (propertize (if (equal pwd "~")
+                            pwd
+                          (abbreviate-file-name (shrink-path-file pwd)))
+                        'face '+eshell-prompt-pwd))
+          (propertize (+eshell--current-git-branch)
+                      'face '+eshell-prompt-git-branch)
+          (if (bound-and-true-p conda-env-current-name)
+              (propertize (concat " [conda:" conda-env-current-name "]"
+                                  ) 'face 'italic)
+            "")
+          (propertize " λ" 'face (if (zerop eshell-last-command-status)
+                                     'success 'error))
+          " "))
+(setq eshell-prompt-function #'mac/eshell-default-prompt-fn)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   LSP-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -316,8 +341,8 @@
 ;; Tomatinho
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (map! :leader
-      :desc "Tomatinho" "tt" #'tomatinho)
-
+      :desc "Tomatinho" "tt" #'tomatinho
+      :desc "Quit Tomatinho" "tq" #'tomatinho-interactive-quit)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
