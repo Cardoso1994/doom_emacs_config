@@ -33,11 +33,11 @@
 ;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
 ;;   presentations or streaming.
 ;;
-;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
+ ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "JetBrains Mono" :size 22 :weight 'normal)
+(setq doom-font (font-spec :family "JuliaMono" :size 22 :weight 'normal)
       doom-unicode-font (font-spec :family "JetBrainsMono Nerd Font")
       doom-variable-pitch-font (font-spec :family "Bookerly"))
 
@@ -50,7 +50,7 @@
 ;; italics for comments and keywords
 (custom-set-faces!
   '(font-lock-comment-face :slant italic :weight light)
-  '(font-lock-keyword-face :slant italic :weight semi-bold))
+  '(font-lock-keyword-face :slant italic :weight normal))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -74,8 +74,28 @@
     (run-at-time (format "%02d:%02d" (+ hour 1) 0) nil
                  #'mac/timed-theme morning-theme night-theme)))
 
+(mac/timed-theme 'doom-solarized-light
+                 'doom-solarized-dark)
+
+;; gruvbox-material contrast and palette options
+;; (setq doom-gruvbox-material-background  "medium"
+;;      doom-gruvbox-material-palette     "material")
+
+;; gruvbox-material-light contrast and palette options
+;; (setq doom-gruvbox-material-light-background  "medium"
+;;       doom-gruvbox-material-light-palette     "material")
+
+;; everforest contrast options
+;; (setq doom-everforest-background  "hard")
+(setq doom-everforest-light-background "hard")
+
+;; (mac/timed-theme 'doom-gruvbox-material-light
+;; (mac/timed-theme 'doom-everforest-light
+;;                  'doom-everforest)
+;;                  'doom-gruvbox-material)
+
 ;; solarized dark configuration
-(custom-theme-set-faces! 'doom-solarized-dark
+(custom-theme-set-faces! '(doom-solarized-dark doom-everforest)
   `(fill-column-indicator :foreground ,(doom-color 'bg-alt)
                           :background ,(doom-color 'bg-alt))
   `(font-lock-comment-face :foreground ,(doom-darken (doom-color 'teal) 0.15))
@@ -90,10 +110,10 @@
   `(org-level-1 :foreground ,(doom-color 'violet) :weight bold))
 
 ;; solarized light configuration
-(custom-theme-set-faces! 'doom-solarized-light
+(custom-theme-set-faces! '(doom-solarized-light doom-everforest-light)
   `(fill-column-indicator :foreground ,(doom-color 'bg-alt)
                           :background ,(doom-color 'bg-alt))
-  `(font-lock-comment-face :foreground ,(doom-lighten (doom-color 'teal) 0.1))
+  `(font-lock-comment-face :foreground ,(doom-lighten (doom-color 'teal) 0.2))
   `(org-document-info-keyword :foreground ,(doom-lighten
                                             (doom-color 'violet) 0.25))
   `(org-meta-line :foreground ,(doom-lighten (doom-color 'magenta) 0.25))
@@ -101,25 +121,6 @@
   `(org-drawer :foreground ,(doom-lighten (doom-color 'orange) 0.35))
   `(show-paren-match :foreground ,(doom-color 'fg)
                      :background ,(doom-lighten (doom-color 'orange) 0.5)))
-
-;; gruvbox-material contrast and palette options
-;; (setq doom-gruvbox-material-background  "medium"
-;;      doom-gruvbox-material-palette     "material")
-
-;; gruvbox-material-light contrast and palette options
-;; (setq doom-gruvbox-material-light-background  "medium"
-;;       doom-gruvbox-material-light-palette     "material")
-
-;; everforest contrast options
-;; (setq doom-everforest-background  "hard")
-;; (setq doom-everforest-light-background "medium")
-
-;; (mac/timed-theme 'doom-gruvbox-material-light
-;; (mac/timed-theme 'doom-everforest-light
-;;                  'doom-everforest)
-;;                  'doom-gruvbox-material)
-(mac/timed-theme 'doom-solarized-light
-                 'doom-solarized-dark)
 
 ;; enabling italics and bold font
 (after! doom-themes
@@ -166,7 +167,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   Eshell
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun mac/eshell-default-prompt-fn ()
+(defun mac/eshell-prompt-fn ()
   "Generate the prompt string for eshell.Based in the original doom's
 eshell-default-prompt-fn. Use for `eshell-prompt-function'."
   (require 'shrink-path)
@@ -185,7 +186,14 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
           (propertize " λ" 'face (if (zerop eshell-last-command-status)
                                      'success 'error))
           " "))
-(setq eshell-prompt-function #'mac/eshell-default-prompt-fn)
+
+;; not an elegant solution for own eshell prompt function
+(setq mac/eshell-own-prompt nil)
+(add-hook! 'eshell-mode-hook
+   (if (not mac/eshell-own-prompt)
+       (progn (setq mac/eshell-own-prompt t
+                    eshell-prompt-function #'mac/eshell-prompt-fn))
+        t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   LSP-mode
@@ -196,9 +204,8 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   Conda
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (use-package! conda
-  :config
+  :init
   (custom-set-variables '(conda-anaconda-home "/opt/miniconda3/"))
   (conda-env-initialize-eshell)
   (setq conda-env-home-directory (expand-file-name "~/.conda/")))
@@ -211,7 +218,7 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
       evil-split-window-right t)
 ;;       evil-want-fine-undo nil)
 ;; evil key bindings
-(map! :leader :n "f f"         #'evil-ex-search-forward)
+(map! :leader :n "f f"  #'evil-ex-search-forward)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

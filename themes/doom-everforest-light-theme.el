@@ -110,7 +110,7 @@ Defaults to \"soft\""
    (vertical-bar   (doom-darken base1 0.1))
    (selection      dark-blue)
    (builtin        magenta)
-   (comments       (if doom-everforest-light-brighter-comments cyan (doom-darken base5 0.15)))
+   (comments       (if doom-everforest-light-brighter-comments cyan (doom-lighten cyan 0.25)))
    (doc-comments   (doom-darken (if doom-everforest-light-brighter-comments dark-cyan base5) 0.2))
    (constants      violet)
    (functions      cyan)
