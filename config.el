@@ -37,7 +37,7 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "JuliaMono" :size 22 :weight 'normal)
+(setq doom-font (font-spec :family "JetBrains Mono" :size 22 :weight 'normal)
       doom-unicode-font (font-spec :family "JetBrainsMono Nerd Font")
       doom-variable-pitch-font (font-spec :family "Bookerly"))
 
@@ -74,20 +74,20 @@
     (run-at-time (format "%02d:%02d" (+ hour 1) 0) nil
                  #'mac/timed-theme morning-theme night-theme)))
 
-(mac/timed-theme 'doom-solarized-light
-                 'doom-solarized-dark)
+;; (mac/timed-theme 'doom-solarized-light
+;;                  'doom-solarized-dark)
 
 ;; gruvbox-material contrast and palette options
-;; (setq doom-gruvbox-material-background  "medium"
-;;      doom-gruvbox-material-palette     "material")
+;; (setq doom-gruvbox-material-background  "medium")
+;;       doom-gruvbox-material-palette "mix")
 
 ;; gruvbox-material-light contrast and palette options
 ;; (setq doom-gruvbox-material-light-background  "medium"
-;;       doom-gruvbox-material-light-palette     "material")
+;;       doom-gruvbox-material-light-palette "original")
 
 ;; everforest contrast options
 ;; (setq doom-everforest-background  "hard")
-(setq doom-everforest-light-background "hard")
+;; (setq doom-everforest-light-background "hard")
 
 ;; (mac/timed-theme 'doom-gruvbox-material-light
 ;; (mac/timed-theme 'doom-everforest-light
