@@ -9,3 +9,7 @@
 
 # Undo-tree save-files
 *.~undo-tree
+
+# gruvbox-material
+doom-gruvbox-material-light-theme.el
+doom-gruvbox-material-theme.el
