@@ -195,6 +195,11 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
                     eshell-prompt-function #'mac/eshell-prompt-fn))
         t))
 
+;; open eshell buffer in pwd
+(map! :leader (:n "o E" nil
+               :n "o e" nil
+               :desc "open Eshell buffer" :n "o e" #'+eshell/here))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   LSP-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -217,9 +222,11 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 (setq evil-split-window-below t
       evil-split-window-right t)
 ;;       evil-want-fine-undo nil)
+
 ;; evil key bindings
 (map! :leader :n "f f"  #'evil-ex-search-forward)
-
+(map! :n "0" nil
+      :n "0" #'evil-first-non-blank)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Mixed Pitch
