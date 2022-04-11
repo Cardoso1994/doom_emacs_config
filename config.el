@@ -269,6 +269,7 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 
 ;; custom latex document-classes for org-latex-export-to-pdf
 (after! ox-latex
+  (setq org-latex-default-figure-position "htbp!")
   (add-to-list 'org-latex-classes
                ;; for CsCog article. needs llncs.sty file in same folder as org
                ;; file
