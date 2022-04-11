@@ -74,31 +74,31 @@
     (run-at-time (format "%02d:%02d" (+ hour 1) 0) nil
                  #'mac/timed-theme morning-theme night-theme)))
 
-;; (mac/timed-theme 'doom-solarized-light
-;;                  'doom-solarized-dark)
+(mac/timed-theme 'doom-solarized-light
+                 'doom-solarized-dark)
 
 ;; gruvbox-material contrast and palette options
-;; (setq doom-gruvbox-material-background  "medium")
+;; (setq doom-gruvbox-material-background  "medium"
 ;;       doom-gruvbox-material-palette "mix")
 
 ;; gruvbox-material-light contrast and palette options
 ;; (setq doom-gruvbox-material-light-background  "medium"
-;;       doom-gruvbox-material-light-palette "original")
+;;       doom-gruvbox-material-light-palette "mix")
 
 ;; everforest contrast options
 ;; (setq doom-everforest-background  "hard")
 ;; (setq doom-everforest-light-background "hard")
 
 ;; (mac/timed-theme 'doom-gruvbox-material-light
+;;                  'doom-gruvbox-material)
 ;; (mac/timed-theme 'doom-everforest-light
 ;;                  'doom-everforest)
-;;                  'doom-gruvbox-material)
 
 ;; solarized dark configuration
 (custom-theme-set-faces! '(doom-solarized-dark doom-everforest)
   `(fill-column-indicator :foreground ,(doom-color 'bg-alt)
                           :background ,(doom-color 'bg-alt))
-  `(font-lock-comment-face :foreground ,(doom-darken (doom-color 'teal) 0.15))
+  `(font-lock-comment-face :foreground ,(doom-darken (doom-color 'teal) 0.3))
   `(org-document-info-keyword :foreground ,(doom-darken
                                             (doom-color 'green) 0.3))
   `(org-drawer :foreground ,(doom-darken (doom-color 'yellow) 0.25))
@@ -113,7 +113,7 @@
 (custom-theme-set-faces! '(doom-solarized-light doom-everforest-light)
   `(fill-column-indicator :foreground ,(doom-color 'bg-alt)
                           :background ,(doom-color 'bg-alt))
-  `(font-lock-comment-face :foreground ,(doom-lighten (doom-color 'teal) 0.2))
+  `(font-lock-comment-face :foreground ,(doom-lighten (doom-color 'teal) 0.25))
   `(org-document-info-keyword :foreground ,(doom-lighten
                                             (doom-color 'violet) 0.25))
   `(org-meta-line :foreground ,(doom-lighten (doom-color 'magenta) 0.25))
