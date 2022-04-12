@@ -79,26 +79,26 @@
 
 ;; gruvbox-material contrast and palette options
 ;; (setq doom-gruvbox-material-background  "medium"
-;;      doom-gruvbox-material-palette     "material")
+;;       doom-gruvbox-material-palette "mix")
 
 ;; gruvbox-material-light contrast and palette options
 ;; (setq doom-gruvbox-material-light-background  "medium"
-;;       doom-gruvbox-material-light-palette     "material")
+;;       doom-gruvbox-material-light-palette "mix")
 
 ;; everforest contrast options
 ;; (setq doom-everforest-background  "hard")
-(setq doom-everforest-light-background "hard")
+;; (setq doom-everforest-light-background "hard")
 
 ;; (mac/timed-theme 'doom-gruvbox-material-light
+;;                  'doom-gruvbox-material)
 ;; (mac/timed-theme 'doom-everforest-light
 ;;                  'doom-everforest)
-;;                  'doom-gruvbox-material)
 
 ;; solarized dark configuration
 (custom-theme-set-faces! '(doom-solarized-dark doom-everforest)
   `(fill-column-indicator :foreground ,(doom-color 'bg-alt)
                           :background ,(doom-color 'bg-alt))
-  `(font-lock-comment-face :foreground ,(doom-darken (doom-color 'teal) 0.15))
+  `(font-lock-comment-face :foreground ,(doom-darken (doom-color 'teal) 0.3))
   `(org-document-info-keyword :foreground ,(doom-darken
                                             (doom-color 'green) 0.3))
   `(org-drawer :foreground ,(doom-darken (doom-color 'yellow) 0.25))
@@ -113,7 +113,7 @@
 (custom-theme-set-faces! '(doom-solarized-light doom-everforest-light)
   `(fill-column-indicator :foreground ,(doom-color 'bg-alt)
                           :background ,(doom-color 'bg-alt))
-  `(font-lock-comment-face :foreground ,(doom-lighten (doom-color 'teal) 0.2))
+  `(font-lock-comment-face :foreground ,(doom-lighten (doom-color 'teal) 0.25))
   `(org-document-info-keyword :foreground ,(doom-lighten
                                             (doom-color 'violet) 0.25))
   `(org-meta-line :foreground ,(doom-lighten (doom-color 'magenta) 0.25))
@@ -195,6 +195,11 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
                     eshell-prompt-function #'mac/eshell-prompt-fn))
         t))
 
+;; open eshell buffer in pwd
+(map! :leader (:n "o E" nil
+               :n "o e" nil
+               :desc "open Eshell buffer" :n "o e" #'+eshell/here))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   LSP-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -222,9 +227,12 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 (setq evil-split-window-below t
       evil-split-window-right t)
 ;;       evil-want-fine-undo nil)
-;; evil key bindings
-(after! evil (map! :leader :n "f f"  #'evil-ex-search-forward))
 
+;; evil key bindings
+(after! evil
+  (map! :leader :n "f f"  #'evil-ex-search-forward)
+  (map! :leader :n "f f"  #'evil-ex-search-forward)
+  (map! :n "0" nil :n "0" #'evil-first-non-blank))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Mixed Pitch
@@ -267,6 +275,7 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 
 ;; custom latex document-classes for org-latex-export-to-pdf
 (after! ox-latex
+  (setq org-latex-default-figure-position "htbp!")
   (add-to-list 'org-latex-classes
                ;; for CsCog article. needs llncs.sty file in same folder as org
                ;; file
