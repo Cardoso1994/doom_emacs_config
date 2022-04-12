@@ -362,4 +362,4 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-hook! 'prog-mode-hook #'rainbow-delimiters-mode)
 (add-hook! 'prog-mode-hook #'display-fill-column-indicator-mode) ;; 80 col high
-(add-hook! 'after-init-hook #'org-agenda-list)
+; (add-hook! 'after-init-hook #'org-agenda-list)
