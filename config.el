@@ -223,7 +223,7 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
       evil-split-window-right t)
 ;;       evil-want-fine-undo nil)
 ;; evil key bindings
-(map! :leader :n "f f"  #'evil-ex-search-forward)
+(after! evil (map! :leader :n "f f"  #'evil-ex-search-forward))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
