@@ -37,7 +37,7 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "JuliaMono" :size 22 :weight 'normal)
+(setq doom-font (font-spec :family "JetBrains Mono" :size 22 :weight 'normal)
       doom-unicode-font (font-spec :family "JetBrainsMono Nerd Font")
       doom-variable-pitch-font (font-spec :family "Bookerly"))
 
@@ -65,7 +65,7 @@
   (let* ((morning-theme (or morning-theme 'doom-solarized-light))
          (night-theme (or night-theme 'doom-solarized-dark))
          (hour (nth 2 (decode-time (current-time))))
-         (theme (cond ((<= 7 hour 17)   morning-theme)
+         (theme (cond ((<= 7 hour 18)   morning-theme)
                       (t                night-theme))))
     (unless (equal doom-theme theme)
       (setq doom-theme theme)
