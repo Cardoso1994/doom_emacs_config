@@ -74,16 +74,16 @@
     (run-at-time (format "%02d:%02d" (+ hour 1) 0) nil
                  #'mac/timed-theme morning-theme night-theme)))
 
-(mac/timed-theme 'doom-solarized-light
-                 'doom-solarized-dark)
+;; defining colorschemes
+(mac/timed-theme)
 
 ;; gruvbox-material contrast and palette options
 ;; (setq doom-gruvbox-material-background  "medium"
 ;;       doom-gruvbox-material-palette "mix")
 
 ;; gruvbox-material-light contrast and palette options
-;; (setq doom-gruvbox-material-light-background  "medium"
-;;       doom-gruvbox-material-light-palette "mix")
+;; (setq doom-gruvbox-material-light-background  "hard"
+;;       doom-gruvbox-material-light-palette "original")
 
 ;; everforest contrast options
 ;; (setq doom-everforest-background  "hard")
@@ -98,7 +98,7 @@
 (custom-theme-set-faces! '(doom-solarized-dark doom-everforest)
   `(fill-column-indicator :foreground ,(doom-color 'bg-alt)
                           :background ,(doom-color 'bg-alt))
-  `(font-lock-comment-face :foreground ,(doom-darken (doom-color 'teal) 0.3))
+  `(font-lock-comment-face :foreground ,(doom-darken (doom-color 'teal) 0.2))
   `(org-document-info-keyword :foreground ,(doom-darken
                                             (doom-color 'green) 0.3))
   `(org-drawer :foreground ,(doom-darken (doom-color 'yellow) 0.25))
@@ -107,20 +107,27 @@
                      :background ,(doom-darken (doom-color 'orange) 0.5))
   `(org-block-begin-line :foreground ,(doom-color 'fg-alt)
                          :background ,(doom-color 'bg-alt))
-  `(org-level-1 :foreground ,(doom-color 'violet) :weight bold))
+  `(org-level-1 :foreground ,(doom-color 'violet) :weight bold :height 1.6)
+  `(org-level-2 :foreground ,(doom-color 'orange) :weight bold :height 1.4)
+  `(org-level-3 :foreground ,(doom-color 'magenta):weight bold  :height 1.2)
+  `(org-level-4 :foreground ,(doom-color 'teal) :weight bold :height 1.1))
 
 ;; solarized light configuration
 (custom-theme-set-faces! '(doom-solarized-light doom-everforest-light)
   `(fill-column-indicator :foreground ,(doom-color 'bg-alt)
                           :background ,(doom-color 'bg-alt))
-  `(font-lock-comment-face :foreground ,(doom-lighten (doom-color 'teal) 0.3))
+  `(font-lock-comment-face :foreground ,(doom-lighten (doom-color 'teal) 0.2))
   `(org-document-info-keyword :foreground ,(doom-lighten
                                             (doom-color 'violet) 0.25))
   `(org-meta-line :foreground ,(doom-lighten (doom-color 'magenta) 0.25))
   `(org-link :foreground ,(doom-color 'teal) :underline t)
   `(org-drawer :foreground ,(doom-lighten (doom-color 'orange) 0.35))
   `(show-paren-match :foreground ,(doom-color 'fg)
-                     :background ,(doom-lighten (doom-color 'orange) 0.5)))
+                     :background ,(doom-lighten (doom-color 'orange) 0.5))
+  `(org-level-1 :foreground ,(doom-color 'violet) :weight bold :height 1.6)
+  `(org-level-2 :foreground ,(doom-color 'orange) :weight bold :height 1.4)
+  `(org-level-3 :foreground ,(doom-color 'magenta):weight bold  :height 1.2)
+  `(org-level-4 :foreground ,(doom-color 'teal) :weight bold :height 1.1))
 
 ;; enabling italics and bold font
 (after! doom-themes
@@ -210,16 +217,21 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;;   Conda
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package! conda
-  :init
+  :config
   ;; arch!
-  ;; (custom-set-variables '(conda-anaconda-home "/opt/miniconda3/"))
-  ;; (setq conda-env-home-directory (expand-file-name "~/.conda/")))
+  (custom-set-variables '(conda-anaconda-home "/opt/miniconda3/"))
+  (setq conda-env-home-directory (expand-file-name "~/.conda/")))
 
   ;; ubuntu!
-  (custom-set-variables '(conda-anaconda-home (expand-file-name "~/miniconda3/")))
-  (setq conda-env-home-directory (expand-file-name "~/miniconda3/")))
+  ;; (custom-set-variables '(conda-anaconda-home (expand-file-name "~/miniconda3/")))
+  ;; (setq conda-env-home-directory (expand-file-name "~/miniconda3/")))
+
   (conda-env-initialize-eshell)
 
+(after! conda
+  (map! :leader
+        :nm "m c a" #'conda-env-activate
+        :nm "m c d" #'conda-env-deactivate))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   Evil
@@ -230,8 +242,13 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 
 ;; evil key bindings
 (after! evil
-  (map! :leader :n "f f"  #'evil-ex-search-forward)
-  (map! :n "0" nil :n "0" #'evil-first-non-blank))
+  (map! :leader (:n "f f"  #'evil-ex-search-forward))
+  (map! :n "0" nil
+        :n "0" #'evil-first-non-blank)
+  ;; bind `s' to evil-substitute
+  (map! (:map (evil-snipe-local-mode-map evil-snipe-mode-map)
+         :nm "s" nil)
+        :nm "s" #'evil-substitute))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Mixed Pitch
