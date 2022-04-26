@@ -113,7 +113,7 @@
 (custom-theme-set-faces! '(doom-solarized-light doom-everforest-light)
   `(fill-column-indicator :foreground ,(doom-color 'bg-alt)
                           :background ,(doom-color 'bg-alt))
-  `(font-lock-comment-face :foreground ,(doom-lighten (doom-color 'teal) 0.25))
+  `(font-lock-comment-face :foreground ,(doom-lighten (doom-color 'teal) 0.3))
   `(org-document-info-keyword :foreground ,(doom-lighten
                                             (doom-color 'violet) 0.25))
   `(org-meta-line :foreground ,(doom-lighten (doom-color 'magenta) 0.25))
@@ -230,7 +230,6 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 
 ;; evil key bindings
 (after! evil
-  (map! :leader :n "f f"  #'evil-ex-search-forward)
   (map! :leader :n "f f"  #'evil-ex-search-forward)
   (map! :n "0" nil :n "0" #'evil-first-non-blank))
 
