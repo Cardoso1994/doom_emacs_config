@@ -75,22 +75,22 @@
                  #'mac/timed-theme morning-theme night-theme)))
 
 ;; defining colorschemes
-(mac/timed-theme)
+;; (mac/timed-theme)
 
 ;; gruvbox-material contrast and palette options
-;; (setq doom-gruvbox-material-background  "medium"
-;;       doom-gruvbox-material-palette "mix")
+(setq doom-gruvbox-material-background  "medium"
+      doom-gruvbox-material-palette "material")
 
 ;; gruvbox-material-light contrast and palette options
-;; (setq doom-gruvbox-material-light-background  "hard"
-;;       doom-gruvbox-material-light-palette "original")
+(setq doom-gruvbox-material-light-background  "medium"
+      doom-gruvbox-material-light-palette "original")
 
 ;; everforest contrast options
 ;; (setq doom-everforest-background  "hard")
 ;; (setq doom-everforest-light-background "hard")
 
-;; (mac/timed-theme 'doom-gruvbox-material-light
-;;                  'doom-gruvbox-material)
+(mac/timed-theme 'doom-gruvbox-material-light
+                 'doom-gruvbox-material)
 ;; (mac/timed-theme 'doom-everforest-light
 ;;                  'doom-everforest)
 
@@ -320,14 +320,15 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org-Roam
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package! org-roam
-  :defer t
-  :custom (org-roam-directory "/home/cardoso/second_brain")
-  :config
-  ;; If you're using a vertical completion framework, you might want a more informative completion interface
-  (setq org-roam-node-display-template
-        (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-  (org-roam-setup))
+(unless (eq system-type 'darwin)
+    (use-package! org-roam
+      :defer t
+      :custom (org-roam-directory "/home/cardoso/second_brain")
+      :config
+      ;; If you're using a vertical completion framework, you might want a more informative completion interface
+      (setq org-roam-node-display-template
+      (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+      (org-roam-setup)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
