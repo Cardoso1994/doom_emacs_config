@@ -37,7 +37,7 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "JetBrains Mono" :size 22 :weight 'normal)
+(setq doom-font (font-spec :family "JuliaMono" :size 22 :weight 'normal)
       doom-unicode-font (font-spec :family "JetBrainsMono Nerd Font")
       doom-variable-pitch-font (font-spec :family "Bookerly"))
 
@@ -75,22 +75,22 @@
                  #'mac/timed-theme morning-theme night-theme)))
 
 ;; defining colorschemes
-(mac/timed-theme)
+;; (mac/timed-theme)
 
 ;; gruvbox-material contrast and palette options
-;; (setq doom-gruvbox-material-background  "medium"
-;;       doom-gruvbox-material-palette "mix")
+(setq doom-gruvbox-material-background  "medium"
+      doom-gruvbox-material-palette "material")
 
 ;; gruvbox-material-light contrast and palette options
-;; (setq doom-gruvbox-material-light-background  "hard"
-;;       doom-gruvbox-material-light-palette "original")
+(setq doom-gruvbox-material-light-background  "medium"
+      doom-gruvbox-material-light-palette "material")
 
 ;; everforest contrast options
 ;; (setq doom-everforest-background  "hard")
 ;; (setq doom-everforest-light-background "hard")
 
-;; (mac/timed-theme 'doom-gruvbox-material-light
-;;                  'doom-gruvbox-material)
+(mac/timed-theme 'doom-gruvbox-material-light
+                 'doom-gruvbox-material)
 ;; (mac/timed-theme 'doom-everforest-light
 ;;                  'doom-everforest)
 
@@ -219,12 +219,12 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 (use-package! conda
   :config
   ;; arch!
-  (custom-set-variables '(conda-anaconda-home "/opt/miniconda3/"))
-  (setq conda-env-home-directory (expand-file-name "~/.conda/")))
+  ;; (custom-set-variables '(conda-anaconda-home "/opt/miniconda3/"))
+  ;; (setq conda-env-home-directory (expand-file-name "~/.conda/")))
 
   ;; ubuntu!
-  ;; (custom-set-variables '(conda-anaconda-home (expand-file-name "~/miniconda3/")))
-  ;; (setq conda-env-home-directory (expand-file-name "~/miniconda3/")))
+  (custom-set-variables '(conda-anaconda-home (expand-file-name "~/miniconda3/")))
+  (setq conda-env-home-directory (expand-file-name "~/miniconda3/")))
 
   (conda-env-initialize-eshell)
 
@@ -380,6 +380,16 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 (map! :leader
       :desc "Tomatinho" "tt" #'tomatinho
       :desc "Quit Tomatinho" "tq" #'tomatinho-interactive-quit)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Emacs everywhere
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(map! :leader
+      :desc "Done with server edit buffer" "ee" #'server-edi)
+
+
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
