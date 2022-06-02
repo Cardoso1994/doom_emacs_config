@@ -244,7 +244,16 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 (after! evil
   (map! :leader (:n "f f"  #'evil-ex-search-forward))
   (map! :n "0" nil
-        :n "0" #'evil-first-non-blank)
+        :n "0" #'evil-first-non-blank
+        :n "C-=" nil
+        :n "C-=" #'doom/reset-font-size
+        :n "C-+" nil
+        :n "C-+" #'text-scale-increase)
+  (if (eq system-type 'darwin)
+      (map!
+       :n "ç" nil
+       :n "ç" #'evil-forward-paragraph
+       :n "´" #'evil-backward-paragraph))
   ;; bind `s' to evil-substitute
   (map! (:map (evil-snipe-local-mode-map evil-snipe-mode-map)
          :nm "s" nil)
@@ -320,14 +329,15 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org-Roam
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package! org-roam
-  :defer t
-  :custom (org-roam-directory "/home/cardoso/second_brain")
-  :config
-  ;; If you're using a vertical completion framework, you might want a more informative completion interface
-  (setq org-roam-node-display-template
-        (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-  (org-roam-setup))
+(unless (eq system-type 'darwin)
+    (use-package! org-roam
+      :defer t
+      :custom (org-roam-directory "/home/cardoso/second_brain")
+      :config
+      ;; If you're using a vertical completion framework, you might want a more informative completion interface
+      (setq org-roam-node-display-template
+      (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+      (org-roam-setup)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
