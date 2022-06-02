@@ -37,7 +37,7 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "JetBrains Mono" :size 22 :weight 'normal)
+(setq doom-font (font-spec :family "JuliaMono" :size 22 :weight 'normal)
       doom-unicode-font (font-spec :family "JetBrainsMono Nerd Font")
       doom-variable-pitch-font (font-spec :family "Bookerly"))
 
@@ -244,7 +244,16 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 (after! evil
   (map! :leader (:n "f f"  #'evil-ex-search-forward))
   (map! :n "0" nil
-        :n "0" #'evil-first-non-blank)
+        :n "0" #'evil-first-non-blank
+        :n "C-=" nil
+        :n "C-=" #'doom/reset-font-size
+        :n "C-+" nil
+        :n "C-+" #'text-scale-increase)
+  (if (eq system-type 'darwin)
+      (map!
+       :n "ç" nil
+       :n "ç" #'evil-forward-paragraph
+       :n "´" #'evil-backward-paragraph))
   ;; bind `s' to evil-substitute
   (map! (:map (evil-snipe-local-mode-map evil-snipe-mode-map)
          :nm "s" nil)
