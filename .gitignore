@@ -13,3 +13,5 @@
 # gruvbox-material
 doom-gruvbox-material-light-theme.el
 doom-gruvbox-material-theme.el
+
+custom.el

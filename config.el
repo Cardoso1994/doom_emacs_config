@@ -75,7 +75,8 @@
                  #'mac/timed-theme morning-theme night-theme)))
 
 ;; defining colorschemes
-;; (mac/timed-theme)
+(mac/timed-theme 'doom-gruvbox-material-light
+                 'doom-gruvbox-material)
 
 ;; gruvbox-material contrast and palette options
 (setq doom-gruvbox-material-background  "medium"
