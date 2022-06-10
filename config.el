@@ -37,7 +37,7 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "JuliaMono" :size 22 :weight 'normal)
+(setq doom-font (font-spec :family "JetBrains Mono" :size 22 :weight 'normal)
       doom-unicode-font (font-spec :family "JetBrainsMono Nerd Font")
       doom-variable-pitch-font (font-spec :family "Bookerly"))
 
@@ -285,7 +285,7 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 (after! org
   ;; org... aesthetics?
   (setq org-hide-block-startup t)               ;; all blocks folded by default
-  (setq org-image-actual-width 450)             ;; width of inline images
+  (setq org-image-actual-width 850)             ;; width of inline images
   (setq org-startup-folded t)                   ;; everything folded (overview)
 
   ;; latex export config
