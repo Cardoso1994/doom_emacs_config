@@ -225,15 +225,15 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
                                 (expand-file-name "~/miniconda3")))
         (setq conda-env-home-directory (expand-file-name "~/.conda")))
     (progn
-      (custom-set-variables '(conda-anaconda-home "/opt/miniconda3/"))
-      (setq conda-env-home-directory (expand-file-name "~/.conda/")))))
+      (custom-set-variables '(conda-anaconda-home "~/miniconda3/"))
+      (setq conda-env-home-directory (expand-file-name "~/miniconda3/")))))
   ;; arch!
   ;; (custom-set-variables '(conda-anaconda-home "/opt/miniconda3/"))
   ;; (setq conda-env-home-directory (expand-file-name "~/.conda/")))
 
   ;; ubuntu!
-  (custom-set-variables '(conda-anaconda-home (expand-file-name "~/miniconda3/")))
-  (setq conda-env-home-directory (expand-file-name "~/miniconda3/")))
+  ;; (custom-set-variables '(conda-anaconda-home (expand-file-name "~/miniconda3/")))
+  ;; (setq conda-env-home-directory (expand-file-name "~/miniconda3/")))
 
   (conda-env-initialize-eshell)
 
