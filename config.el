@@ -74,9 +74,6 @@
     (run-at-time (format "%02d:%02d" (+ hour 1) 0) nil
                  #'mac/timed-theme morning-theme night-theme)))
 
-;; defining colorschemes
-(mac/timed-theme 'doom-gruvbox-material-light
-                 'doom-gruvbox-material)
 
 ;; gruvbox-material contrast and palette options
 (setq doom-gruvbox-material-background  "medium"
@@ -86,14 +83,12 @@
 (setq doom-gruvbox-material-light-background  "medium"
       doom-gruvbox-material-light-palette "material")
 
+;; defining colorschemes
+(mac/timed-theme 'doom-gruvbox-material-light
+                 'doom-gruvbox-material)
 ;; everforest contrast options
 ;; (setq doom-everforest-background  "hard")
 ;; (setq doom-everforest-light-background "hard")
-
-(mac/timed-theme 'doom-gruvbox-material-light
-                 'doom-gruvbox-material)
-;; (mac/timed-theme 'doom-everforest-light
-;;                  'doom-everforest)
 
 ;; solarized dark configuration
 (custom-theme-set-faces! '(doom-solarized-dark doom-everforest)
@@ -170,6 +165,9 @@
 (global-visual-line-mode t)     ;; enables visual wrapping of lines
 
 (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode))
+
+;; don't autosave tramp buffers in server, but locally instead
+(setq tramp-auto-save-directory (expand-file-name "~/garbage"))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -253,7 +251,7 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 (after! evil
   (map! :leader (:n "f f"  #'evil-ex-search-forward))
   (map! :n "0" nil
-        :n "0" #'evil-first-non-blank
+        :nv "0" #'evil-first-non-blank
         :n "C-=" nil
         :n "C-=" #'doom/reset-font-size
         :n "C-+" nil
