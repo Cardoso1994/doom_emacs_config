@@ -51,4 +51,3 @@
 
 (package! org-ref)
 (package! mixed-pitch)
-(package! tomatinho)
