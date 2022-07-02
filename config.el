@@ -112,7 +112,7 @@
   `(org-level-4 :foreground ,(doom-color 'teal) :weight bold :height 1.1))
 
 ;; solarized light configuration
-(custom-theme-set-faces! '(doom-solarized-light doom-nord-light)
+(custom-theme-set-faces! '(doom-solarized-light doom-everforest-light)
   `(fill-column-indicator :foreground ,(doom-color 'bg-alt)
                           :background ,(doom-color 'bg-alt))
   `(font-lock-comment-face :foreground ,(doom-lighten (doom-color 'teal) 0.2))
@@ -269,6 +269,7 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
          :nm "s" nil)
         :nm "s" #'evil-substitute))
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Mixed Pitch
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -294,9 +295,17 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;; https://www.reddit.com/r/DoomEmacs/comments/mby1ou/after_vs_usepackage/
 (after! org
   ;; org... aesthetics?
-  (setq org-hide-block-startup t)               ;; all blocks folded by default
-  (setq org-image-actual-width 850)             ;; width of inline images
-  (setq org-startup-folded t)                   ;; everything folded (overview)
+  (setq org-hide-block-startup t               ;; all blocks folded by default
+        org-image-actual-width 850             ;; width of inline images
+        org-startup-folded t                   ;; everything folded (overview)
+        org-startup-with-latex-preview t       ;; start with latex preview
+        org-format-latex-options '(:foreground default :background default
+                                  :scale 2.5 :html-foreground "Black"
+                                  :html-background "Transparent"
+                                  :html-scale 1.0
+                                  :matchers ("begin" "$1" "$" "$$" "\\(" "\\[")))
+
+
 
   ;; latex export config
   (add-to-list 'org-latex-default-packages-alist
