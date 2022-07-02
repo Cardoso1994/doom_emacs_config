@@ -207,7 +207,17 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;; open eshell buffer in pwd
 (map! :leader (:n "o E" nil
                :n "o e" nil
-               :desc "open Eshell buffer" :n "o e" #'+eshell/here))
+               :desc "open Eshell buffer in pwd" :n "o e" #'+eshell/here))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;   Vterm
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; open vterm buffer in pwd
+;; (map! :leader (:n "o T" nil
+;;                :n "o t" nil
+;;                :desc "open Vterm buffer in pwd" :n "o t" #'+eshell/here))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   LSP-mode
@@ -224,17 +234,13 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
       (progn
         (custom-set-variables '(conda-anaconda-home
                                 (expand-file-name "~/miniconda3")))
-        (setq conda-env-home-directory (expand-file-name "~/.conda")))
+        (setq conda-env-home-directory (expand-file-name "~/miniconda3")))
     (progn
       (custom-set-variables '(conda-anaconda-home "~/miniconda3/"))
       (setq conda-env-home-directory (expand-file-name "~/miniconda3/")))))
   ;; arch!
   ;; (custom-set-variables '(conda-anaconda-home "/opt/miniconda3/"))
   ;; (setq conda-env-home-directory (expand-file-name "~/.conda/")))
-
-  ;; ubuntu!
-  ;; (custom-set-variables '(conda-anaconda-home (expand-file-name "~/miniconda3/")))
-  ;; (setq conda-env-home-directory (expand-file-name "~/miniconda3/")))
 
   (conda-env-initialize-eshell)
 
@@ -247,8 +253,8 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;;   Evil
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq evil-split-window-below t
-      evil-split-window-right t)
-;;       evil-want-fine-undo nil)
+      evil-split-window-right t
+      evil-want-fine-undo t)
 
 ;; evil key bindings
 (after! evil
@@ -379,7 +385,11 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package! dired
   :defer t
-  :custom ((dired-listing-switches "-agho --group-directories-first")))
+  :custom
+  (if (eq system-type 'darwin)
+      (setq insert-directory-program "gls"
+            dired-use-ls-dired t))
+  (dired-listing-switches "-agho --group-directories-first"))
 
 (map! :map dired-mode-map
         ;; Kill buffer when quitting dired buffers
