@@ -261,6 +261,7 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
       (map!
        :n "ç" nil
        :n "ç" #'evil-forward-paragraph
+       :n "´" nil
        :n "´" #'evil-backward-paragraph))
   ;; bind `s' to evil-substitute
   (map! (:map (evil-snipe-local-mode-map evil-snipe-mode-map)
@@ -287,6 +288,15 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org And Latex
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; adding texbin to PATH on macOS
+(if (eq system-type 'darwin)
+    (progn
+    (getenv "PATH")
+  (setenv "PATH"
+          (concat "/Library/TeX/texbin/" ":"
+                  (getenv "PATH"))))
+  nil)
+
 ;; using after! instead of `use-package!' because `use-package!' loads a package
 ;; inmediately. accordingly to
 ;; https://www.reddit.com/r/DoomEmacs/comments/mby1ou/after_vs_usepackage/
@@ -324,28 +334,26 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 
 ;; org key bindings
 (map! :map org-mode-map
-      :leader
+      :localleader
       (:prefix ("l" . "org-latex")
       :desc "Export org to PDF latex"  :n "e" #'org-latex-export-to-pdf
       :desc "Insert new label"         :n "l" #'org-ref-insert-label-link
       :desc "Insert new reference"     :n "r" #'org-ref-insert-ref-link
       :desc "Insert new citation"      :n "c" #'org-ref-insert-cite-link)
-      (:prefix "m"
-      :desc "Edit special block"      :n "<" #'org-edit-special))
+      :desc "Edit special block"      :n "<" #'org-edit-special)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org-Roam
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(unless (eq system-type 'darwin)
-    (use-package! org-roam
-      :defer t
-      :custom (org-roam-directory "/home/cardoso/second_brain")
-      :config
-      ;; If you're using a vertical completion framework, you might want a more informative completion interface
-      (setq org-roam-node-display-template
-      (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-      (org-roam-setup)))
+(use-package! org-roam
+  :defer t
+  :custom (org-roam-directory (expand-file-name "~/second_brain"))
+  :config
+  ;; If you're using a vertical completion framework, you might want a more informative completion interface
+  (setq org-roam-node-display-template
+        (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (org-roam-setup))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -394,21 +402,6 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;; Vertico
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq vertico-sort-function #'vertico-sort-history-alpha)
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Tomatinho
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(map! :leader
-      :desc "Tomatinho" "tt" #'tomatinho
-      :desc "Quit Tomatinho" "tq" #'tomatinho-interactive-quit)
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Emacs everywhere
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(map! :leader
-      :desc "Done with server edit buffer" "ee" #'server-edi)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
