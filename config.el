@@ -250,7 +250,12 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 
 ;; evil key bindings
 (after! evil
-  (map! :leader (:n "f f"  #'evil-ex-search-forward))
+  (map!
+   :leader
+   :desc "Find text in buffer" :n "f f"  #'evil-ex-search-forward
+   :desc "Increase font size" :n "f +" #'text-scale-increase
+   :desc "Decrease font size" :n "f -" #'text-scale-decrease
+   :desc "Reset font size" :n "f =" #'doom/reset-font-size)
   (map! :n "0" nil
         :nv "0" #'evil-first-non-blank
         :n "C-=" nil
