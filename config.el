@@ -348,8 +348,15 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
       :desc "Export org to PDF latex"  :n "e" #'org-latex-export-to-pdf
       :desc "Insert new label"         :n "l" #'org-ref-insert-label-link
       :desc "Insert new reference"     :n "r" #'org-ref-insert-ref-link
-      :desc "Insert new citation"      :n "c" #'org-ref-insert-cite-link)
-      :desc "Edit special block"      :n "<" #'org-edit-special)
+      :desc "Insert new citation"      :n "c" #'org-ref-insert-cite-link))
+
+(if (eq system-type 'darwin)
+    (map! :map org-mode-map
+          :localleader
+          (:desc "Edit special block" :n "|" #'org-edit-special))
+    (map! :map org-mode-map
+          :localleader
+          (:desc "Edit special block" :n "<" #'org-edit-special)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
