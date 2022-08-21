@@ -258,15 +258,26 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
         :n "C-+" nil
         :n "C-+" #'text-scale-increase)
   (if (eq system-type 'darwin)
-      (map!
-       :n "ç" nil
-       :n "ç" #'evil-forward-paragraph
-       :n "´" nil
-       :n "´" #'evil-backward-paragraph))
+      (progn
+        (map!
+         :n "ç" nil
+         :n "ç" #'evil-forward-paragraph
+         :n "´" nil
+         :n "´" #'evil-backward-paragraph)
+        (map!
+         :leader
+         :n "w |" nil
+         :n "w |" #'evil-window-decrease-width
+         :n "w °" #'evil-window-increase-width)))
   ;; bind `s' to evil-substitute
   (map! (:map (evil-snipe-local-mode-map evil-snipe-mode-map)
          :nm "s" nil)
-        :nm "s" #'evil-substitute))
+        :nm "s" #'evil-substitute)
+  (map! :leader
+        (:prefix ("F" . "frames")
+        :desc "Go to next frame" :n "n" #'+evil/next-frame
+        :desc "Go to previous frame" :n "p" #'+evil/previous-frame
+        :desc "Open new frame" :n "o" #'make-frame)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -308,7 +319,7 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
         org-startup-folded t                   ;; everything folded (overview)
         org-startup-with-latex-preview t       ;; start with latex preview
         org-format-latex-options '(:foreground default :background default
-                                  :scale 2.5 :html-foreground "Black"
+                                  :scale 2.0 :html-foreground "Black"
                                   :html-background "Transparent"
                                   :html-scale 1.0
                                   :matchers ("begin" "$1" "$" "$$" "\\(" "\\[")))
