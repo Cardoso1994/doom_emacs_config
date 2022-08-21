@@ -334,20 +334,31 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
   ;; (setq org-latex-caption-above nil)            ;; captions below tables
   (setq org-latex-pdf-process
         '("latexmk -pdflatex='pdflatex -interaction nonstopmode' -pdf -bibtex -f %f"))
+        ;; '("latexmk -shell-escape -bibtex -f -pdf %f"))
   (setq org-latex-image-default-option "keepaspectratio")) ;; keep img ratio
 
 ;; custom latex document-classes for org-latex-export-to-pdf
 (after! ox-latex
   (setq org-latex-default-figure-position "htbp!")
+  ;; for CsCog article. needs llncs.sty file in same folder as org
+  ;; file
   (add-to-list 'org-latex-classes
-               ;; for CsCog article. needs llncs.sty file in same folder as org
-               ;; file
                '("llncs" "\\documentclass{llncs}"
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  ;; for masters thesis
+  (add-to-list 'org-latex-classes
+               '("masters_thesis"
+                 "\\documentclass{book}
+                  [NO-DEFAULT-PACKAGES]
+                  [NO-PACKAGES]"
+                 ("\\chapter{%s}" . "\\chapter*{%s}")
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
 
 ;; MS Word and Libreoffice
 (setq org-odt-preferred-output-format "docx")
