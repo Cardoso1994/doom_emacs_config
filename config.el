@@ -229,21 +229,12 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;;   Conda
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package! conda
-  :config
-  (if (eq system-type 'darwin)
-      (progn
-        (custom-set-variables '(conda-anaconda-home
-                                (expand-file-name "~/miniconda3")))
-        (setq conda-env-home-directory (expand-file-name "~/miniconda3")))
-    (progn
-      (custom-set-variables '(conda-anaconda-home
-                              (expand-file-name "~/miniconda3/")))
-      (setq conda-env-home-directory (expand-file-name "~/miniconda3/")))))
-  ;; arch!
-  ;; (custom-set-variables '(conda-anaconda-home "/opt/miniconda3/"))
-  ;; (setq conda-env-home-directory (expand-file-name "~/.conda/")))
+  :init
+  (custom-set-variables '(conda-anaconda-home
+                          (expand-file-name "~/miniconda3")))
+  (setq conda-env-home-directory (expand-file-name "~/miniconda3")))
 
-  (conda-env-initialize-eshell)
+(conda-env-initialize-eshell)
 
 (after! conda
   (map! :leader
@@ -259,7 +250,12 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 
 ;; evil key bindings
 (after! evil
-  (map! :leader (:n "f f"  #'evil-ex-search-forward))
+  (map!
+   :leader
+   :desc "Find text in buffer" :n "f f"  #'evil-ex-search-forward
+   :desc "Increase font size" :n "f +" #'text-scale-increase
+   :desc "Decrease font size" :n "f -" #'text-scale-decrease
+   :desc "Reset font size" :n "f =" #'doom/reset-font-size)
   (map! :n "0" nil
         :nv "0" #'evil-first-non-blank
         :n "C-=" nil
@@ -267,14 +263,26 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
         :n "C-+" nil
         :n "C-+" #'text-scale-increase)
   (if (eq system-type 'darwin)
-      (map!
-       :n "ç" nil
-       :n "ç" #'evil-forward-paragraph
-       :n "´" #'evil-backward-paragraph))
+      (progn
+        (map!
+         :n "ç" nil
+         :n "ç" #'evil-forward-paragraph
+         :n "´" nil
+         :n "´" #'evil-backward-paragraph)
+        (map!
+         :leader
+         :n "w |" nil
+         :n "w |" #'evil-window-decrease-width
+         :n "w °" #'evil-window-increase-width)))
   ;; bind `s' to evil-substitute
   (map! (:map (evil-snipe-local-mode-map evil-snipe-mode-map)
          :nm "s" nil)
-        :nm "s" #'evil-substitute))
+        :nm "s" #'evil-substitute)
+  (map! :leader
+        (:prefix ("F" . "frames")
+        :desc "Go to next frame" :n "n" #'+evil/next-frame
+        :desc "Go to previous frame" :n "p" #'+evil/previous-frame
+        :desc "Open new frame" :n "o" #'make-frame)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -298,6 +306,15 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org And Latex
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; adding texbin to PATH on macOS
+(if (eq system-type 'darwin)
+    (progn
+    (getenv "PATH")
+  (setenv "PATH"
+          (concat "/Library/TeX/texbin/" ":"
+                  (getenv "PATH"))))
+  nil)
+
 ;; using after! instead of `use-package!' because `use-package!' loads a package
 ;; inmediately. accordingly to
 ;; https://www.reddit.com/r/DoomEmacs/comments/mby1ou/after_vs_usepackage/
@@ -308,7 +325,7 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
         org-startup-folded t                   ;; everything folded (overview)
         org-startup-with-latex-preview t       ;; start with latex preview
         org-format-latex-options '(:foreground default :background default
-                                  :scale 2.5 :html-foreground "Black"
+                                  :scale 2.0 :html-foreground "Black"
                                   :html-background "Transparent"
                                   :html-scale 1.0
                                   :matchers ("begin" "$1" "$" "$$" "\\(" "\\[")))
@@ -323,50 +340,65 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
   ;; (setq org-latex-caption-above nil)            ;; captions below tables
   (setq org-latex-pdf-process
         '("latexmk -pdflatex='pdflatex -interaction nonstopmode' -pdf -bibtex -f %f"))
+        ;; '("latexmk -shell-escape -bibtex -f -pdf %f"))
   (setq org-latex-image-default-option "keepaspectratio")) ;; keep img ratio
 
 ;; custom latex document-classes for org-latex-export-to-pdf
 (after! ox-latex
   (setq org-latex-default-figure-position "htbp!")
+  ;; for CsCog article. needs llncs.sty file in same folder as org
+  ;; file
   (add-to-list 'org-latex-classes
-               ;; for CsCog article. needs llncs.sty file in same folder as org
-               ;; file
                '("llncs" "\\documentclass{llncs}"
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  ;; for masters thesis
+  (add-to-list 'org-latex-classes
+               '("masters_thesis"
+                 "\\documentclass{book}
+                  [NO-DEFAULT-PACKAGES]
+                  [NO-PACKAGES]"
+                 ("\\chapter{%s}" . "\\chapter*{%s}")
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
 
 ;; MS Word and Libreoffice
 (setq org-odt-preferred-output-format "docx")
 
 ;; org key bindings
 (map! :map org-mode-map
-      :leader
+      :localleader
       (:prefix ("l" . "org-latex")
       :desc "Export org to PDF latex"  :n "e" #'org-latex-export-to-pdf
       :desc "Insert new label"         :n "l" #'org-ref-insert-label-link
       :desc "Insert new reference"     :n "r" #'org-ref-insert-ref-link
       :desc "Insert new citation"      :n "c" #'org-ref-insert-cite-link
-      :desc "LaTeX preview"            :n "p" #'org-latex-preview)
+      :desc "LaTeX preview"            :n "p" #'org-latex-preview))
 
-      (:prefix "m"
-      :desc "Edit special block"      :n "<" #'org-edit-special))
+(if (eq system-type 'darwin)
+    (map! :map org-mode-map
+          :localleader
+          (:desc "Edit special block" :n "|" #'org-edit-special))
+    (map! :map org-mode-map
+          :localleader
+          (:desc "Edit special block" :n "<" #'org-edit-special)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org-Roam
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(unless (eq system-type 'darwin)
-    (use-package! org-roam
-      :defer t
-      :custom (org-roam-directory "/home/cardoso/second_brain")
-      :config
-      ;; If you're using a vertical completion framework, you might want a more informative completion interface
-      (setq org-roam-node-display-template
-      (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-      (org-roam-setup)))
+(use-package! org-roam
+  :defer t
+  :custom (org-roam-directory (expand-file-name "~/second_brain"))
+  :config
+  ;; If you're using a vertical completion framework, you might want a more informative completion interface
+  (setq org-roam-node-display-template
+        (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (org-roam-setup))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -415,21 +447,6 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;; Vertico
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq vertico-sort-function #'vertico-sort-history-alpha)
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Tomatinho
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(map! :leader
-      :desc "Tomatinho" "tt" #'tomatinho
-      :desc "Quit Tomatinho" "tq" #'tomatinho-interactive-quit)
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Emacs everywhere
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(map! :leader
-      :desc "Done with server edit buffer" "ee" #'server-edi)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
