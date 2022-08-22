@@ -58,12 +58,15 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 ;; (setq doom-theme 'doom-one)
-(defun mac/timed-theme (&optional morning-theme night-theme)
+
+(defun mac/timed-theme (&optional morning-theme afternoon-theme night-theme)
   "Change doom-theme depending on time of the day. Runs every hour."
   (let* ((morning-theme (or morning-theme 'doom-solarized-light))
+         (afternoon-theme (or afternoon-theme 'doom-gruvbox-light))
          (night-theme (or night-theme 'doom-solarized-dark))
          (hour (nth 2 (decode-time (current-time))))
-         (theme (cond ((<= 7 hour 18)   morning-theme)
+         (theme (cond ((<= 7 hour 16)   morning-theme)
+                      ((<= 17 hour 19)  afternoon-theme)
                       (t                night-theme))))
     (unless (equal doom-theme theme)
       (setq doom-theme theme)
@@ -81,17 +84,16 @@
 (setq doom-gruvbox-material-light-background  "soft"
       doom-gruvbox-material-light-palette "material")
 
-;; defining colorschemes
-(mac/timed-theme 'doom-gruvbox-material-light
+;; everforest contrast options
+(setq doom-everforest-background  "hard"
+      doom-everforest-light-background "medium")
+
+(mac/timed-theme 'doom-everforest-light
+                 'doom-gruvbox-material-light
                  'doom-gruvbox-material)
 
-(if (equal doom-theme 'catppuccin)
-    (setq pdf-view-midnight-colors '("#d9e0ee" . "#1e1d2f")))
 ;; (mac/timed-theme 'doom-nord-light
 ;;                  'doom-nord)
-;; everforest contrast options
-;; (setq doom-everforest-background  "hard")
-;; (setq doom-everforest-light-background "hard")
 
 ;; solarized dark configuration
 (custom-theme-set-faces! '(doom-solarized-dark doom-nord)
@@ -113,20 +115,33 @@
 
 ;; solarized light configuration
 (custom-theme-set-faces! '(doom-solarized-light doom-everforest-light)
-  `(fill-column-indicator :foreground ,(doom-color 'bg-alt)
+   `(diredfl-compressed-file-name :height 1.15
+                                  :foreground ,(doom-color 'yellow))
+   `(diredfl-dir-heading :height 1.15 :foreground ,(doom-color 'teal))
+   `(diredfl-dir-name :height 1.15 :foreground ,(doom-color 'blue))
+   `(diredfl-deletion :height 1.15 :foreground ,(doom-color 'red)
+                      :background ,(doom-darken (doom-color 'red) 0.55))
+   `(diredfl-deletion-file-name :foreground ,(doom-color 'red)
+                                :background ,(doom-darken
+                                              (doom-color 'red) 0.55))
+   `(diredfl-file-name :height 1.15 :foreground ,(doom-color 'fg))
+   `(dired-flagged :height 1.15 :foreground ,(doom-color 'red)
+                   :background ,(doom-darken (doom-color 'red) 0.55))
+   `(diredfl-symlink :height 1.15 :foreground ,(doom-color 'magenta))
+   `(fill-column-indicator :foreground ,(doom-color 'bg-alt)
                           :background ,(doom-color 'bg-alt))
-  `(font-lock-comment-face :foreground ,(doom-lighten (doom-color 'teal) 0.2))
-  `(org-document-info-keyword :foreground ,(doom-lighten
-                                            (doom-color 'violet) 0.25))
-  `(org-meta-line :foreground ,(doom-lighten (doom-color 'magenta) 0.25))
-  `(org-link :foreground ,(doom-color 'teal) :underline t)
-  `(org-drawer :foreground ,(doom-lighten (doom-color 'orange) 0.35))
-  `(show-paren-match :foreground ,(doom-color 'fg)
-                     :background ,(doom-lighten (doom-color 'orange) 0.5))
-  `(org-level-1 :foreground ,(doom-color 'violet) :weight bold :height 1.6)
-  `(org-level-2 :foreground ,(doom-color 'orange) :weight bold :height 1.4)
-  `(org-level-3 :foreground ,(doom-color 'magenta):weight bold  :height 1.2)
-  `(org-level-4 :foreground ,(doom-color 'teal) :weight bold :height 1.1))
+   `(font-lock-comment-face :foreground ,(doom-lighten (doom-color 'teal) 0.2))
+   `(org-document-info-keyword :foreground ,(doom-lighten
+                                             (doom-color 'violet) 0.25))
+   `(org-meta-line :foreground ,(doom-lighten (doom-color 'magenta) 0.25))
+   `(org-link :foreground ,(doom-color 'teal) :underline t)
+   `(org-drawer :foreground ,(doom-lighten (doom-color 'orange) 0.35))
+   `(show-paren-match :foreground ,(doom-color 'fg)
+                      :background ,(doom-lighten (doom-color 'orange) 0.5))
+   `(org-level-1 :foreground ,(doom-color 'violet) :weight bold :height 1.6)
+   `(org-level-2 :foreground ,(doom-color 'orange) :weight bold :height 1.4)
+   `(org-level-3 :foreground ,(doom-color 'magenta):weight bold  :height 1.2)
+   `(org-level-4 :foreground ,(doom-color 'teal) :weight bold :height 1.1))
 
 ;; enabling italics and bold font
 (after! doom-themes
