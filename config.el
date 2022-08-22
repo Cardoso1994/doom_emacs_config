@@ -42,9 +42,6 @@
       doom-unicode-font (font-spec :family "JetBrainsMono Nerd Font")
       doom-variable-pitch-font (font-spec :family "Bookerly"))
 
-;; (setq doom-font (font-spec :family "Cascadia Code PL" :size 22 :weight 'normal)
-      ;; doom-variable-pitch-font (font-spec :family "Guardi LT Roman"))
-      ;; doom-variable-pitch-font (font-spec :family "Lato"))
 (setq doom-font-increment 1
       doom-big-font-increment 1)
 
@@ -81,12 +78,15 @@
       doom-gruvbox-material-palette "material")
 
 ;; gruvbox-material-light contrast and palette options
-(setq doom-gruvbox-material-light-background  "medium"
+(setq doom-gruvbox-material-light-background  "soft"
       doom-gruvbox-material-light-palette "material")
 
 ;; defining colorschemes
 (mac/timed-theme 'doom-gruvbox-material-light
                  'doom-gruvbox-material)
+
+(if (equal doom-theme 'catppuccin)
+    (setq pdf-view-midnight-colors '("#d9e0ee" . "#1e1d2f")))
 ;; (mac/timed-theme 'doom-nord-light
 ;;                  'doom-nord)
 ;; everforest contrast options
@@ -164,8 +164,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; (setq initial-major-mode 'lisp-interaction-mode)
 (setq auto-save-default t       ;; autosave
-      scroll-margin 2)          ;; a little margin on top and bottom edges
-(global-visual-line-mode t)     ;; enables visual wrapping of lines
+      scroll-margin 2          ;; a little margin on top and bottom edges
+      global-visual-line-mode t)     ;; enables visual wrapping of lines
 
 (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode))
 
@@ -236,7 +236,8 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
                                 (expand-file-name "~/miniconda3")))
         (setq conda-env-home-directory (expand-file-name "~/miniconda3")))
     (progn
-      (custom-set-variables '(conda-anaconda-home "~/miniconda3/"))
+      (custom-set-variables '(conda-anaconda-home
+                              (expand-file-name "~/miniconda3/")))
       (setq conda-env-home-directory (expand-file-name "~/miniconda3/")))))
   ;; arch!
   ;; (custom-set-variables '(conda-anaconda-home "/opt/miniconda3/"))
@@ -293,6 +294,7 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 (add-hook! 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode)
 
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org And Latex
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -346,7 +348,9 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
       :desc "Export org to PDF latex"  :n "e" #'org-latex-export-to-pdf
       :desc "Insert new label"         :n "l" #'org-ref-insert-label-link
       :desc "Insert new reference"     :n "r" #'org-ref-insert-ref-link
-      :desc "Insert new citation"      :n "c" #'org-ref-insert-cite-link)
+      :desc "Insert new citation"      :n "c" #'org-ref-insert-cite-link
+      :desc "LaTeX preview"            :n "p" #'org-latex-preview)
+
       (:prefix "m"
       :desc "Edit special block"      :n "<" #'org-edit-special))
 
