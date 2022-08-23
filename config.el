@@ -73,7 +73,7 @@
       (load-theme doom-theme t))
     ;; run every hour
     (run-at-time (format "%02d:%02d" (+ hour 1) 0) nil
-                 #'mac/timed-theme morning-theme night-theme)))
+                 #'mac/timed-theme morning-theme afternoon-theme night-theme)))
 
 
 ;; gruvbox-material contrast and palette options
@@ -88,12 +88,9 @@
 (setq doom-everforest-background  "hard"
       doom-everforest-light-background "medium")
 
-(mac/timed-theme 'doom-everforest-light
+(mac/timed-theme 'doom-solarized-light
                  'doom-gruvbox-material-light
                  'doom-gruvbox-material)
-
-;; (mac/timed-theme 'doom-nord-light
-;;                  'doom-nord)
 
 ;; solarized dark configuration
 (custom-theme-set-faces! '(doom-solarized-dark doom-nord)
@@ -252,9 +249,11 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 (conda-env-initialize-eshell)
 
 (after! conda
-  (map! :leader
-        :nm "m c a" #'conda-env-activate
-        :nm "m c d" #'conda-env-deactivate))
+  (map! :map (python-mode-map eshell-mode-map)
+        :localleader
+        :prefix ("c" . "conda")
+        :nm "a" #'conda-env-activate
+        :nm "d" #'conda-env-deactivate))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   Evil
@@ -283,7 +282,9 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
          :n "ç" nil
          :n "ç" #'evil-forward-paragraph
          :n "´" nil
-         :n "´" #'evil-backward-paragraph)
+         :n "´" #'evil-backward-paragraph
+         :v "|" #'evil-shift-left
+         :v "°" #'evil-shift-right)
         (map!
          :leader
          :n "w |" nil
