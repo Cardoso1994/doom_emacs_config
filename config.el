@@ -47,8 +47,8 @@
 
 ;; italics for comments and keywords
 (custom-set-faces!
-  '(font-lock-comment-face :slant italic :weight light)
-  '(font-lock-keyword-face :slant italic :weight normal))
+  '(font-lock-comment-face :slant italic :weight semi-light)
+  '(font-lock-keyword-face :slant italic :weight semi-bold))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
