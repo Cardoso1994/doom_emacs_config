@@ -51,3 +51,5 @@
 
 (package! org-ref)
 (package! mixed-pitch)
+(package! tree-sitter)
+(package! tree-sitter-langs)
