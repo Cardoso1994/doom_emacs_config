@@ -249,7 +249,11 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
   :init
   (custom-set-variables '(conda-anaconda-home
                           (expand-file-name "~/miniconda3")))
-  (setq conda-env-home-directory (expand-file-name "~/miniconda3")))
+  (setq conda-env-home-directory (expand-file-name "~/miniconda3"))
+
+  :config
+  (add-hook! 'conda-postactivate-hook (cmd! (lsp-restart-workspace)))
+  (add-hook! 'conda-postdeactivate-hook (cmd! (lsp-restart-workspace))))
 
 (conda-env-initialize-eshell)
 
@@ -479,7 +483,7 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Hooks
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-hook! 'prog-mode-hook #'rainbow-delimiters-mode)
-(add-hook! 'prog-mode-hook #'display-fill-column-indicator-mode) ;; 80 col high
+(add-hook! 'prog-mode-hook #'rainbow-delimiters-mode
+                           #'display-fill-column-indicator-mode) ;; 80 col high
 (add-hook! 'python-mode-hook #'hs-hide-all #'tree-sitter-hl-mode)
 ; (add-hook! 'after-init-hook #'org-agenda-list)
