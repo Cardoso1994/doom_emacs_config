@@ -59,21 +59,25 @@
 ;; `load-theme' function. This is the default:
 ;; (setq doom-theme 'doom-one)
 
-(defun mac/timed-theme (&optional morning-theme afternoon-theme night-theme)
-  "Change doom-theme depending on time of the day. Runs every hour."
+(defun mac/timed-theme (&optional morning-theme afternoon-theme
+                                  late-afternoon-theme night-theme)
+  "Change doom-theme depending on time of the day. Run every hour."
   (let* ((morning-theme (or morning-theme 'doom-solarized-light))
          (afternoon-theme (or afternoon-theme 'doom-gruvbox-light))
-         (night-theme (or night-theme 'doom-solarized-dark))
+         (late-afternoon-theme (or late-afternoon-theme 'doom-solarized-dark))
+         (night-theme (or night-theme 'doom-gruvbox))
          (hour (nth 2 (decode-time (current-time))))
          (theme (cond ((<= 7 hour 16)   morning-theme)
                       ((<= 17 hour 19)  afternoon-theme)
+                      ((<= 19 hour 21)  late-afternoon-theme)
                       (t                night-theme))))
     (unless (equal doom-theme theme)
       (setq doom-theme theme)
       (load-theme doom-theme t))
     ;; run every hour
     (run-at-time (format "%02d:%02d" (+ hour 1) 0) nil
-                 #'mac/timed-theme morning-theme afternoon-theme night-theme)))
+                 #'mac/timed-theme morning-theme afternoon-theme
+                 late-afternoon-theme night-theme)))
 
 
 ;; gruvbox-material contrast and palette options
@@ -85,11 +89,12 @@
       doom-gruvbox-material-light-palette "material")
 
 ;; everforest contrast options
-(setq doom-everforest-background  "hard"
+(setq doom-everforest-background  "medium"
       doom-everforest-light-background "medium")
 
 (mac/timed-theme 'doom-solarized-light
                  'doom-gruvbox-material-light
+                 'doom-everforest
                  'doom-gruvbox-material)
 
 ;; solarized dark configuration
@@ -127,7 +132,7 @@
    `(diredfl-symlink :height 1.15 :foreground ,(doom-color 'magenta))
    `(fill-column-indicator :foreground ,(doom-color 'bg-alt)
                           :background ,(doom-color 'bg-alt))
-   `(font-lock-comment-face :foreground ,(doom-lighten (doom-color 'teal) 0.2))
+   `(font-lock-comment-face :foreground ,(doom-lighten (doom-color 'yellow) 0.4))
    `(org-document-info-keyword :foreground ,(doom-lighten
                                              (doom-color 'violet) 0.25))
    `(org-meta-line :foreground ,(doom-lighten (doom-color 'magenta) 0.25))
@@ -466,8 +471,15 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Tree-sitter
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package! tree-sitter)
+(use-package! tree-sitter-langs)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Hooks
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-hook! 'prog-mode-hook #'rainbow-delimiters-mode)
 (add-hook! 'prog-mode-hook #'display-fill-column-indicator-mode) ;; 80 col high
+(add-hook! 'python-mode-hook #'hs-hide-all #'tree-sitter-hl-mode)
 ; (add-hook! 'after-init-hook #'org-agenda-list)
