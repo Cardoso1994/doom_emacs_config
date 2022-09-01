@@ -67,9 +67,9 @@
          (late-afternoon-theme (or late-afternoon-theme 'doom-solarized-dark))
          (night-theme (or night-theme 'doom-gruvbox))
          (hour (nth 2 (decode-time (current-time))))
-         (theme (cond ((<= 7 hour 16)   morning-theme)
-                      ((<= 17 hour 19)  afternoon-theme)
-                      ((<= 19 hour 21)  late-afternoon-theme)
+         (theme (cond ((<= 7 hour 15)   morning-theme)
+                      ((<= 16 hour 19)  afternoon-theme)
+                      ((<= 20 hour 21)  late-afternoon-theme)
                       (t                night-theme))))
     (unless (equal doom-theme theme)
       (setq doom-theme theme)
@@ -94,7 +94,7 @@
 
 (mac/timed-theme 'doom-solarized-light
                  'doom-gruvbox-material-light
-                 'doom-everforest
+                 'doom-one
                  'doom-gruvbox-material)
 
 ;; solarized dark configuration
@@ -309,6 +309,11 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
         :desc "Go to previous frame" :n "p" #'+evil/previous-frame
         :desc "Open new frame" :n "o" #'make-frame)))
 
+;; python keybindings
+(map! :map prog-mode-map
+      :localleader
+      :desc "Fold blocks" :n "h" #'hs-hide-all
+      :desc "Unfold blocks" :n "o" #'hs-show-all)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Mixed Pitch
@@ -485,5 +490,5 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-hook! 'prog-mode-hook #'rainbow-delimiters-mode
                            #'display-fill-column-indicator-mode) ;; 80 col high
-(add-hook! 'python-mode-hook #'hs-hide-all #'tree-sitter-hl-mode)
+(add-hook! 'python-mode-hook #'tree-sitter-hl-mode)
 ; (add-hook! 'after-init-hook #'org-agenda-list)
