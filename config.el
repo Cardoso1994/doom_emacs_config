@@ -59,21 +59,42 @@
 ;; `load-theme' function. This is the default:
 ;; (setq doom-theme 'doom-one)
 
+(setq morning-1 7
+      morning-2 15
+      afternoon-1 16
+      afternoon-2 19
+      late-afternoon-1 20
+      late-afternoon-2 21)
+
+
 (defun mac/timed-theme (&optional morning-theme afternoon-theme
-                                  late-afternoon-theme night-theme)
+                                  late-afternoon-theme night-theme
+                                  change-theme-parameters)
   "Change doom-theme depending on time of the day. Run every hour."
   (let* ((morning-theme (or morning-theme 'doom-solarized-light))
          (afternoon-theme (or afternoon-theme 'doom-gruvbox-light))
          (late-afternoon-theme (or late-afternoon-theme 'doom-solarized-dark))
          (night-theme (or night-theme 'doom-gruvbox))
          (hour (nth 2 (decode-time (current-time))))
-         (theme (cond ((<= 7 hour 15)   morning-theme)
-                      ((<= 16 hour 19)  afternoon-theme)
-                      ((<= 20 hour 21)  late-afternoon-theme)
-                      (t                night-theme))))
-    (unless (equal doom-theme theme)
-      (setq doom-theme theme)
-      (load-theme doom-theme t))
+         (theme (cond ((<= morning-1 hour morning-2)
+                       (setq doom-gruvbox-material-light-background "medium"
+                             doom-gruvbox-material-light-palette "original")
+                       morning-theme)
+                      ((<= afternoon-1 hour afternoon-2)
+                       (setq doom-gruvbox-material-light-background "soft"
+                             doom-gruvbox-material-light-palette "material")
+                       afternoon-theme)
+                      ((<= late-afternoon-1 hour late-afternoon-2)
+                       (setq doom-gruvbox-material-background "medium"
+                             doom-gruvbox-material-palette "original")
+                       late-afternoon-theme)
+                      (t
+                       (setq doom-gruvbox-material-background "soft"
+                             doom-gruvbox-material-palette "material")
+                       night-theme))))
+    (if (or (not (equal doom-theme theme)) change-theme-parameters)
+      (progn (setq doom-theme theme)
+             (load-theme doom-theme t)))
     ;; run every hour
     (run-at-time (format "%02d:%02d" (+ hour 1) 0) nil
                  #'mac/timed-theme morning-theme afternoon-theme
@@ -81,21 +102,23 @@
 
 
 ;; gruvbox-material contrast and palette options
-(setq doom-gruvbox-material-background  "medium"
-      doom-gruvbox-material-palette "material")
+(setq doom-gruvbox-material-background  "medium")
+(setq doom-gruvbox-material-palette "material")
 
 ;; gruvbox-material-light contrast and palette options
-(setq doom-gruvbox-material-light-background  "soft"
-      doom-gruvbox-material-light-palette "material")
+(setq doom-gruvbox-material-light-background  "soft")
+(setq doom-gruvbox-material-light-palette "original")
 
 ;; everforest contrast options
-(setq doom-everforest-background  "medium"
-      doom-everforest-light-background "medium")
+(setq doom-everforest-background  "medium")
+(setq doom-everforest-light-background "medium")
 
-(mac/timed-theme 'doom-solarized-light
+;; (mac/timed-theme 'doom-solarized-light
+(mac/timed-theme nil
                  'doom-gruvbox-material-light
-                 'doom-one
-                 'doom-gruvbox-material)
+                 'doom-gruvbox-material
+                 'doom-gruvbox-material
+                 t)
 
 ;; solarized dark configuration
 (custom-theme-set-faces! '(doom-solarized-dark doom-nord)
@@ -434,9 +457,7 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org-Agenda
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq org-agenda-files
-      '("/home/cardoso/TODO.org"
-        "/home/cardoso/TAREAS.org"))
+(setq org-agenda-files `(,(expand-file-name "~/agenda/TODO.org")))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -485,10 +506,12 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 (use-package! tree-sitter)
 (use-package! tree-sitter-langs)
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Hooks
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-hook! 'prog-mode-hook #'rainbow-delimiters-mode
-                           #'display-fill-column-indicator-mode) ;; 80 col high
-(add-hook! 'python-mode-hook #'tree-sitter-hl-mode)
-; (add-hook! 'after-init-hook #'org-agenda-list)
+                           #'display-fill-column-indicator-mode ;; 80 col high
+                           #'visual-line-mode)
+(add-hook! 'python-mode-hook #'tree-sitter-hl-mode #'hs-hide-all)
+(add-hook! 'after-init-hook #'org-agenda-list)
