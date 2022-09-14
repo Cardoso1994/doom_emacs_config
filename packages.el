@@ -53,3 +53,4 @@
 (package! mixed-pitch)
 (package! tree-sitter)
 (package! tree-sitter-langs)
+(package! ef-themes)
