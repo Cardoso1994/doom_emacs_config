@@ -38,7 +38,7 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "JetBrains Mono" :size 22 :weight 'normal)
+(setq doom-font (font-spec :family "JuliaMono" :size 22 :weight 'normal)
       doom-unicode-font (font-spec :family "JetBrainsMono Nerd Font")
       doom-variable-pitch-font (font-spec :family "Bookerly"))
 
@@ -68,31 +68,19 @@
 
 
 (defun mac/timed-theme (&optional morning-theme afternoon-theme
-                                  late-afternoon-theme night-theme
-                                  change-theme-parameters)
+                                  late-afternoon-theme night-theme)
   "Change doom-theme depending on time of the day. Run every hour."
   (let* ((morning-theme (or morning-theme 'doom-solarized-light))
          (afternoon-theme (or afternoon-theme 'doom-gruvbox-light))
          (late-afternoon-theme (or late-afternoon-theme 'doom-solarized-dark))
          (night-theme (or night-theme 'doom-gruvbox))
          (hour (nth 2 (decode-time (current-time))))
-         (theme (cond ((<= morning-1 hour morning-2)
-                       (setq doom-gruvbox-material-light-background "medium"
-                             doom-gruvbox-material-light-palette "original")
-                       morning-theme)
-                      ((<= afternoon-1 hour afternoon-2)
-                       (setq doom-gruvbox-material-light-background "soft"
-                             doom-gruvbox-material-light-palette "material")
-                       afternoon-theme)
+         (theme (cond ((<= morning-1 hour morning-2) morning-theme)
+                      ((<= afternoon-1 hour afternoon-2) afternoon-theme)
                       ((<= late-afternoon-1 hour late-afternoon-2)
-                       (setq doom-gruvbox-material-background "medium"
-                             doom-gruvbox-material-palette "original")
                        late-afternoon-theme)
-                      (t
-                       (setq doom-gruvbox-material-background "soft"
-                             doom-gruvbox-material-palette "material")
-                       night-theme))))
-    (if (or (not (equal doom-theme theme)) change-theme-parameters)
+                      (t night-theme))))
+    (unless (equal doom-theme theme)
       (progn (setq doom-theme theme)
              (load-theme doom-theme t)))
     ;; run every hour
@@ -102,26 +90,27 @@
 
 
 ;; gruvbox-material contrast and palette options
-(setq doom-gruvbox-material-background  "medium")
+(setq doom-gruvbox-material-background  "soft")
 (setq doom-gruvbox-material-palette "material")
 
 ;; gruvbox-material-light contrast and palette options
 (setq doom-gruvbox-material-light-background  "soft")
-(setq doom-gruvbox-material-light-palette "original")
+(setq doom-gruvbox-material-light-palette "material")
 
 ;; everforest contrast options
 (setq doom-everforest-background  "medium")
 (setq doom-everforest-light-background "medium")
 
 ;; (mac/timed-theme 'doom-solarized-light
-(mac/timed-theme nil
+(mac/timed-theme 'ef-day
                  'doom-gruvbox-material-light
-                 'doom-gruvbox-material
+                 'ef-winter
                  'doom-gruvbox-material
                  t)
 
 ;; solarized dark configuration
-(custom-theme-set-faces! '(doom-solarized-dark doom-nord)
+(custom-theme-set-faces! (append '(doom-solarized-dark doom-nord)
+                                 ef-themes-dark-themes)
   `(fill-column-indicator :foreground ,(doom-color 'bg-alt)
                           :background ,(doom-color 'bg-alt))
   `(font-lock-comment-face :foreground ,(doom-darken (doom-color 'teal) 0.2))
@@ -139,7 +128,8 @@
   `(org-level-4 :foreground ,(doom-color 'teal) :weight bold :height 1.1))
 
 ;; solarized light configuration
-(custom-theme-set-faces! '(doom-solarized-light doom-everforest-light)
+(custom-theme-set-faces! (append '(doom-solarized-light doom-everforest-light)
+                                 ef-themes-light-themes)
    `(diredfl-compressed-file-name :height 1.15
                                   :foreground ,(doom-color 'yellow))
    `(diredfl-dir-heading :height 1.15 :foreground ,(doom-color 'teal))
