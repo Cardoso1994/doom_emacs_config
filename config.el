@@ -59,12 +59,32 @@
 ;; `load-theme' function. This is the default:
 ;; (setq doom-theme 'doom-one)
 
+(add-hook! 'doom-load-theme-hook (cmd! (setq pdf-view-midnight-colors `(,(face-attribute 'default :foreground) . ,(face-attribute 'default :background)))))
+(setq pdf-view-midnight-colors `(,(face-attribute 'default :foreground) . ,(face-attribute 'default :background)))
+(use-package! ef-themes
+  :init
+  (setq ef-themes-headings
+        (quote ((1 . (bold (height . 1.5)))
+                (2 . (bold (height . 1.3)))
+                (3 . (bold (height . 1.1)))
+                (4 . (bold (height . 1.1)))))
+        ef-themes-mixed-fonts t
+        ef-themes-variable-pitch-ui t)
+  (custom-set-faces!
+   '(diredfl-compressed-file-name :height 1.15)
+   '(diredfl-dir-heading :height 1.15)
+   '(diredfl-dir-name :height 1.15)
+   '(diredfl-deletion :height 1.15)
+   '(diredfl-file-name :height 1.15)
+   '(dired-flagged :height 1.15)
+   '(diredfl-symlink :height 1.15)))
+
 (setq morning-1 7
-      morning-2 15
-      afternoon-1 16
-      afternoon-2 19
-      late-afternoon-1 20
-      late-afternoon-2 21)
+      morning-2 14
+      afternoon-1 15
+      afternoon-2 18
+      late-afternoon-1 19
+      late-afternoon-2 22)
 
 (use-package! ef-themes)
 
@@ -83,6 +103,7 @@
                       (t night-theme))))
     (unless (equal doom-theme theme)
       (progn (setq doom-theme theme)
+             (mapc #'disable-theme custom-enabled-themes)
              (load-theme doom-theme t)))
     ;; run every hour
     (run-at-time (format "%02d:%02d" (+ hour 1) 0) nil
@@ -103,14 +124,13 @@
 (setq doom-everforest-light-background "medium")
 
 ;; (mac/timed-theme 'doom-solarized-light
-(mac/timed-theme 'ef-day
+(mac/timed-theme 'doom-one-light
                  'doom-gruvbox-material-light
-                 'ef-winter
+                 'doom-one
                  'doom-gruvbox-material)
 
 ;; solarized dark configuration
-(custom-theme-set-faces! (append '(doom-solarized-dark doom-nord)
-                                 ef-themes-dark-themes)
+(custom-theme-set-faces! '(doom-solarized-dark doom-nord doom-one)
   `(fill-column-indicator :foreground ,(doom-color 'bg-alt)
                           :background ,(doom-color 'bg-alt))
   `(font-lock-comment-face :foreground ,(doom-darken (doom-color 'teal) 0.2))
@@ -127,9 +147,7 @@
   `(org-level-3 :foreground ,(doom-color 'magenta):weight bold  :height 1.2)
   `(org-level-4 :foreground ,(doom-color 'teal) :weight bold :height 1.1))
 
-;; solarized light configuration
-(custom-theme-set-faces! (append '(doom-solarized-light doom-everforest-light)
-                                 ef-themes-light-themes)
+(custom-theme-set-faces! '(doom-solarized-light doom-one-light)
    `(diredfl-compressed-file-name :height 1.15
                                   :foreground ,(doom-color 'yellow))
    `(diredfl-dir-heading :height 1.15 :foreground ,(doom-color 'teal))
@@ -157,6 +175,7 @@
    `(org-level-2 :foreground ,(doom-color 'orange) :weight bold :height 1.4)
    `(org-level-3 :foreground ,(doom-color 'magenta):weight bold  :height 1.2)
    `(org-level-4 :foreground ,(doom-color 'teal) :weight bold :height 1.1))
+
 
 ;; enabling italics and bold font
 (after! doom-themes
@@ -413,22 +432,23 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 (setq org-odt-preferred-output-format "docx")
 
 ;; org key bindings
-(map! :map org-mode-map
-      :localleader
-      (:prefix ("l" . "org-latex")
-      :desc "Export org to PDF latex"  :n "e" #'org-latex-export-to-pdf
-      :desc "Insert new label"         :n "l" #'org-ref-insert-label-link
-      :desc "Insert new reference"     :n "r" #'org-ref-insert-ref-link
-      :desc "Insert new citation"      :n "c" #'org-ref-insert-cite-link
-      :desc "LaTeX preview"            :n "p" #'org-latex-preview))
-
-(if (eq system-type 'darwin)
+(use-package! org
+  :config
+  (map! :map org-mode-map
+        :localleader
+        :prefix ("l" . "org-latex")
+        :desc "Export org to PDF latex"  :n "e" #'org-latex-export-to-pdf
+        :desc "Insert new label"         :n "l" #'org-ref-insert-label-link
+        :desc "Insert new reference"     :n "r" #'org-ref-insert-ref-link
+        :desc "Insert new citation"      :n "c" #'org-ref-insert-cite-link
+        :desc "LaTeX preview"            :n "p" #'org-latex-preview)
+  (if (eq system-type 'darwin)
+      (map! :map org-mode-map
+            :localleader
+            :desc "Edit special block" :n "|" #'org-edit-special)
     (map! :map org-mode-map
           :localleader
-          (:desc "Edit special block" :n "|" #'org-edit-special))
-    (map! :map org-mode-map
-          :localleader
-          (:desc "Edit special block" :n "<" #'org-edit-special)))
+          :desc "Edit special block" :n "<" #'org-edit-special)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
