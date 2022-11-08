@@ -38,7 +38,7 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "JuliaMono" :size 22 :weight 'normal)
+(setq doom-font (font-spec :family "MonoLisa" :size 22 :weight 'normal)
       doom-unicode-font (font-spec :family "JetBrainsMono Nerd Font")
       doom-variable-pitch-font (font-spec :family "Bookerly"))
 
@@ -66,6 +66,7 @@
       late-afternoon-1 20
       late-afternoon-2 21)
 
+(use-package! ef-themes)
 
 (defun mac/timed-theme (&optional morning-theme afternoon-theme
                                   late-afternoon-theme night-theme)
@@ -105,8 +106,7 @@
 (mac/timed-theme 'ef-day
                  'doom-gruvbox-material-light
                  'ef-winter
-                 'doom-gruvbox-material
-                 t)
+                 'doom-gruvbox-material)
 
 ;; solarized dark configuration
 (custom-theme-set-faces! (append '(doom-solarized-dark doom-nord)
