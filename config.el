@@ -17,17 +17,6 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Modeline
-;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq doom-modeline-buffer-file-name-style 'relative-to-project
-      doom-modeline-height 90)
-(set-face-attribute 'mode-line nil :height 220)
-(set-face-attribute 'mode-line-inactive nil :height 220)
-
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   Fonts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
@@ -42,17 +31,28 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "MonoLisa" :size 22 :weight 'normal)
+(setq doom-font (font-spec :family "JetBrains Mono" :size 22 :weight 'normal)
       doom-unicode-font (font-spec :family "JetBrainsMono Nerd Font")
       doom-variable-pitch-font (font-spec :family "Bookerly"))
 
 (setq doom-font-increment 1
-      doom-big-font-increment 1)
+      doom-big-font-increment 0.5
+      text-scale-mode-amount 1
+      text-scale-mode-step 1.05)
 
 ;; italics for comments and keywords
 (custom-set-faces!
   '(font-lock-comment-face :slant italic :weight semi-light)
   '(font-lock-keyword-face :slant italic :weight semi-bold))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Modeline
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq doom-modeline-buffer-file-name-style 'relative-to-project
+      doom-modeline-height 15
+      doom-modeline--buffer-file-icon t)
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -321,8 +321,10 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
   (map!
    :leader
    :desc "Find text in buffer" :n "f f"  #'evil-ex-search-forward
-   :desc "Increase font size" :n "f +" #'doom/increase-font-size
-   :desc "Decrease font size" :n "f -" #'doom/decrease-font-size
+   ;; :desc "Increase font size" :n "f +" #'doom/increase-font-size
+   :desc "Increase font size" :n "f +" #'text-scale-increase
+   ;; :desc "Decrease font size" :n "f -" #'doom/decrease-font-size
+   :desc "Decrease font size" :n "f -" #'text-scale-decrease
    :desc "Reset font size" :n "f =" #'doom/reset-font-size)
   (map! :n "0" nil
         :nv "0" #'evil-first-non-blank
