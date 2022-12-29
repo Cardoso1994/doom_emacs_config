@@ -111,25 +111,29 @@
 
 
 ;; gruvbox-material contrast and palette options
-(setq doom-gruvbox-material-background  "soft")
-(setq doom-gruvbox-material-palette "material")
+(setq doom-gruvbox-material-background  "soft"
+      doom-gruvbox-material-palette "material")
 
 ;; gruvbox-material-light contrast and palette options
-(setq doom-gruvbox-material-light-background  "soft")
-(setq doom-gruvbox-material-light-palette "material")
+(setq doom-gruvbox-material-light-background  "soft"
+      doom-gruvbox-material-light-palette "material")
 
 ;; everforest contrast options
-(setq doom-everforest-background  "medium")
-(setq doom-everforest-light-background "medium")
+(setq doom-everforest-background  "soft"
+      doom-everforest-light-background "soft")
 
 ;; (mac/timed-theme 'doom-solarized-light
-(mac/timed-theme 'doom-one-light
+(mac/timed-theme 'doom-everforest-light
                  'doom-gruvbox-material-light
-                 'doom-one
+                 'doom-everforest
                  'doom-gruvbox-material)
 
 ;; solarized dark configuration
-(custom-theme-set-faces! '(doom-solarized-dark doom-nord doom-one)
+(custom-theme-set-faces! '(doom-solarized-dark doom-nord doom-one
+                                               doom-lighthaus
+                                               doom-monokai-ristretto
+                                               doom-monokai-pro
+                                               doom-everforest)
   `(fill-column-indicator :foreground ,(doom-color 'bg-alt)
                           :background ,(doom-color 'bg-alt))
   `(font-lock-comment-face :foreground ,(doom-darken (doom-color 'teal) 0.2))
@@ -146,7 +150,8 @@
   `(org-level-3 :foreground ,(doom-color 'magenta):weight bold  :height 1.2)
   `(org-level-4 :foreground ,(doom-color 'teal) :weight bold :height 1.1))
 
-(custom-theme-set-faces! '(doom-solarized-light doom-one-light)
+(custom-theme-set-faces! '(doom-solarized-light doom-one-light
+                                                doom-ayu-light)
    `(diredfl-compressed-file-name :height 1.15
                                   :foreground ,(doom-color 'yellow))
    `(diredfl-dir-heading :height 1.15 :foreground ,(doom-color 'teal))
@@ -296,6 +301,11 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
         :nm "d" #'conda-env-deactivate))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;   EIN
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq ein:output-area-inlined-images t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   Evil
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq evil-split-window-below t
@@ -307,8 +317,8 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
   (map!
    :leader
    :desc "Find text in buffer" :n "f f"  #'evil-ex-search-forward
-   :desc "Increase font size" :n "f +" #'text-scale-increase
-   :desc "Decrease font size" :n "f -" #'text-scale-decrease
+   :desc "Increase font size" :n "f +" #'doom/increase-font-size
+   :desc "Decrease font size" :n "f -" #'doom/decrease-font-size
    :desc "Reset font size" :n "f =" #'doom/reset-font-size)
   (map! :n "0" nil
         :nv "0" #'evil-first-non-blank
@@ -384,7 +394,7 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
   (setq org-hide-block-startup t               ;; all blocks folded by default
         org-image-actual-width 850             ;; width of inline images
         org-startup-folded t                   ;; everything folded (overview)
-        org-startup-with-latex-preview t       ;; start with latex preview
+        org-startup-with-latex-preview nil     ;; start with latex preview
         org-format-latex-options '(:foreground default :background default
                                   :scale 2.0 :html-foreground "Black"
                                   :html-background "Transparent"
