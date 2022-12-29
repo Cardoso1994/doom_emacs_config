@@ -20,7 +20,11 @@
 ;; Modeline
 ;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq doom-modeline-buffer-file-name-style 'relative-to-project)
+(setq doom-modeline-buffer-file-name-style 'relative-to-project
+      doom-modeline-height 90)
+(set-face-attribute 'mode-line nil :height 220)
+(set-face-attribute 'mode-line-inactive nil :height 220)
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
