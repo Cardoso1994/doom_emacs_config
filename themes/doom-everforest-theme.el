@@ -1,1 +1,0 @@
-/home/cardoso/doom-everforest-theme/doom-everforest-theme.el
