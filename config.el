@@ -65,24 +65,6 @@
 
 (add-hook! 'doom-load-theme-hook (cmd! (setq pdf-view-midnight-colors `(,(face-attribute 'default :foreground) . ,(face-attribute 'default :background)))))
 (setq pdf-view-midnight-colors `(,(face-attribute 'default :foreground) . ,(face-attribute 'default :background)))
-(use-package! ef-themes
-  :init
-  (setq ef-themes-headings
-        (quote ((1 . (bold (height . 1.5)))
-                (2 . (bold (height . 1.3)))
-                (3 . (bold (height . 1.1)))
-                (4 . (bold (height . 1.1)))))
-        ef-themes-mixed-fonts t
-        ef-themes-variable-pitch-ui t)
-  (custom-set-faces!
-   '(diredfl-compressed-file-name :height 1.15)
-   '(diredfl-dir-heading :height 1.15)
-   '(diredfl-dir-name :height 1.15)
-   '(diredfl-deletion :height 1.15)
-   '(diredfl-file-name :height 1.15)
-   '(dired-flagged :height 1.15)
-   '(diredfl-symlink :height 1.15)))
-
 (setq morning-1 7
       morning-2 14
       afternoon-1 15
@@ -137,8 +119,7 @@
 (custom-theme-set-faces! '(doom-solarized-dark doom-nord doom-one
                                                doom-lighthaus
                                                doom-monokai-ristretto
-                                               doom-monokai-pro
-                                               doom-everforest)
+                                               doom-monokai-pro)
   `(fill-column-indicator :foreground ,(doom-color 'bg-alt)
                           :background ,(doom-color 'bg-alt))
   `(font-lock-comment-face :foreground ,(doom-darken (doom-color 'teal) 0.2))
@@ -193,7 +174,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+;; (setq org-directory "~/org/")
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -470,14 +451,14 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org-Roam
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package! org-roam
-  :defer t
-  :custom (org-roam-directory (expand-file-name "~/second_brain"))
-  :config
-  ;; If you're using a vertical completion framework, you might want a more informative completion interface
-  (setq org-roam-node-display-template
-        (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-  (org-roam-setup))
+;; (use-package! org-roam
+;;   :defer t
+;;   :custom (org-roam-directory (expand-file-name "~/second_brain"))
+;;   :config
+;;   ;; If you're using a vertical completion framework, you might want a more informative completion interface
+;;   (setq org-roam-node-display-template
+;;         (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+;;   (org-roam-setup))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
