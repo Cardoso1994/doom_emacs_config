@@ -27,12 +27,13 @@
 ;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
 ;;   presentations or streaming.
 ;;
- ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
+;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "JetBrains Mono" :size 22 :weight 'normal)
+(setq doom-font (font-spec :family "Victor Mono" :size 22 :weight 'normal)
       doom-unicode-font (font-spec :family "JetBrainsMono Nerd Font")
+      ;; doom-variable-pitch-font (font-spec :family "Bookerly"))
       doom-variable-pitch-font (font-spec :family "Bookerly"))
 
 (setq doom-font-increment 1
@@ -54,7 +55,6 @@
       doom-modeline--buffer-file-icon t)
 
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   Theme
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -71,8 +71,6 @@
       afternoon-2 18
       late-afternoon-1 19
       late-afternoon-2 22)
-
-(use-package! ef-themes)
 
 (defun mac/timed-theme (&optional morning-theme afternoon-theme
                                   late-afternoon-theme night-theme)
@@ -451,14 +449,14 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org-Roam
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (use-package! org-roam
-;;   :defer t
-;;   :custom (org-roam-directory (expand-file-name "~/second_brain"))
-;;   :config
-;;   ;; If you're using a vertical completion framework, you might want a more informative completion interface
-;;   (setq org-roam-node-display-template
-;;         (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-;;   (org-roam-setup))
+(use-package! org-roam
+  :defer t
+  :custom (org-roam-directory (expand-file-name "~/second_brain"))
+  :config
+  ;; If you're using a vertical completion framework, you might want a more informative completion interface
+  (setq org-roam-node-display-template
+        (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (org-roam-db-autosync-enable))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
