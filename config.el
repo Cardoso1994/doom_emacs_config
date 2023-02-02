@@ -27,12 +27,13 @@
 ;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
 ;;   presentations or streaming.
 ;;
- ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
+;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "VictorMono" :size 22 :weight 'normal)
+(setq doom-font (font-spec :family "Victor Mono" :size 22 :weight 'normal)
       doom-unicode-font (font-spec :family "JetBrainsMono Nerd Font")
+      ;; doom-variable-pitch-font (font-spec :family "Bookerly"))
       doom-variable-pitch-font (font-spec :family "Bookerly"))
 
 (setq doom-font-increment 1
@@ -54,7 +55,6 @@
       doom-modeline--buffer-file-icon t)
 
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   Theme
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -65,32 +65,12 @@
 
 (add-hook! 'doom-load-theme-hook (cmd! (setq pdf-view-midnight-colors `(,(face-attribute 'default :foreground) . ,(face-attribute 'default :background)))))
 (setq pdf-view-midnight-colors `(,(face-attribute 'default :foreground) . ,(face-attribute 'default :background)))
-(use-package! ef-themes
-  :init
-  (setq ef-themes-headings
-        (quote ((1 . (bold (height . 1.5)))
-                (2 . (bold (height . 1.3)))
-                (3 . (bold (height . 1.1)))
-                (4 . (bold (height . 1.1)))))
-        ef-themes-mixed-fonts t
-        ef-themes-variable-pitch-ui t)
-  (custom-set-faces!
-   '(diredfl-compressed-file-name :height 1.15)
-   '(diredfl-dir-heading :height 1.15)
-   '(diredfl-dir-name :height 1.15)
-   '(diredfl-deletion :height 1.15)
-   '(diredfl-file-name :height 1.15)
-   '(dired-flagged :height 1.15)
-   '(diredfl-symlink :height 1.15)))
-
 (setq morning-1 7
       morning-2 14
       afternoon-1 15
       afternoon-2 18
       late-afternoon-1 19
       late-afternoon-2 22)
-
-(use-package! ef-themes)
 
 (defun mac/timed-theme (&optional morning-theme afternoon-theme
                                   late-afternoon-theme night-theme)
@@ -137,8 +117,7 @@
 (custom-theme-set-faces! '(doom-solarized-dark doom-nord doom-one
                                                doom-lighthaus
                                                doom-monokai-ristretto
-                                               doom-monokai-pro
-                                               doom-everforest)
+                                               doom-monokai-pro)
   `(fill-column-indicator :foreground ,(doom-color 'bg-alt)
                           :background ,(doom-color 'bg-alt))
   `(font-lock-comment-face :foreground ,(doom-darken (doom-color 'teal) 0.2))
@@ -193,7 +172,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+;; (setq org-directory "~/org/")
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -288,9 +267,9 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package! conda
   :init
+  (setq conda-env-home-directory (expand-file-name "~/miniconda3"))
   (custom-set-variables '(conda-anaconda-home
                           (expand-file-name "~/miniconda3")))
-  (setq conda-env-home-directory (expand-file-name "~/miniconda3"))
 
   :config
   (add-hook! 'conda-postactivate-hook (cmd! (lsp-restart-workspace)))
@@ -423,6 +402,7 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 
 ;; custom latex document-classes for org-latex-export-to-pdf
 (after! ox-latex
+  (setq org-latex-with-hyperref nil)
   (setq org-latex-default-figure-position "htbp!")
   ;; for CsCog article. needs llncs.sty file in same folder as org
   ;; file
@@ -433,6 +413,16 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  ;; Definitions is a folder from the mdpi latex template where al tex code is
+  ;; located
+  (add-to-list 'org-latex-classes
+               '("mdpi"
+                 "\\documentclass{Definitions/mdpi}
+                  [NO-DEFAULT-PACKAGES]
+                  [NO-PACKAGES]"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
   ;; for masters thesis
   (add-to-list 'org-latex-classes
                '("masters_thesis"
@@ -477,7 +467,7 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
   ;; If you're using a vertical completion framework, you might want a more informative completion interface
   (setq org-roam-node-display-template
         (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-  (org-roam-setup))
+  (org-roam-db-autosync-enable))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -539,5 +529,11 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 (add-hook! 'prog-mode-hook #'rainbow-delimiters-mode
                            #'display-fill-column-indicator-mode ;; 80 col high
                            #'visual-line-mode)
-(add-hook! 'python-mode-hook #'tree-sitter-hl-mode #'hs-hide-all)
+(add-hook! 'python-mode-hook #'tree-sitter-hl-mode #'hs-hide-all
+           (cmd! (custom-set-variables '(conda-anaconda-home
+                          (expand-file-name "~/miniconda3")))))
 (add-hook! 'after-init-hook #'org-agenda-list)
+
+;; TEMPORARY FIX in endeavour
+(custom-set-variables '(conda-anaconda-home
+                          (expand-file-name "~/miniconda3")))
