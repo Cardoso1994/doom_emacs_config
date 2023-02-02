@@ -402,6 +402,7 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 
 ;; custom latex document-classes for org-latex-export-to-pdf
 (after! ox-latex
+  (setq org-latex-with-hyperref nil)
   (setq org-latex-default-figure-position "htbp!")
   ;; for CsCog article. needs llncs.sty file in same folder as org
   ;; file
@@ -412,6 +413,16 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  ;; Definitions is a folder from the mdpi latex template where al tex code is
+  ;; located
+  (add-to-list 'org-latex-classes
+               '("mdpi"
+                 "\\documentclass{Definitions/mdpi}
+                  [NO-DEFAULT-PACKAGES]
+                  [NO-PACKAGES]"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
   ;; for masters thesis
   (add-to-list 'org-latex-classes
                '("masters_thesis"
