@@ -31,7 +31,7 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "Victor Mono" :size 22 :weight 'normal)
+(setq doom-font (font-spec :family "Gintronic" :size 22 :weight 'normal)
       doom-unicode-font (font-spec :family "JetBrainsMono Nerd Font")
       ;; doom-variable-pitch-font (font-spec :family "Bookerly"))
       doom-variable-pitch-font (font-spec :family "Bookerly"))
@@ -44,7 +44,7 @@
 ;; italics for comments and keywords
 (custom-set-faces!
   '(font-lock-comment-face :slant italic :weight semi-light)
-  '(font-lock-keyword-face :slant italic :weight semi-bold))
+  '(font-lock-keyword-face :slant italic))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -65,6 +65,7 @@
 
 (add-hook! 'doom-load-theme-hook (cmd! (setq pdf-view-midnight-colors `(,(face-attribute 'default :foreground) . ,(face-attribute 'default :background)))))
 (setq pdf-view-midnight-colors `(,(face-attribute 'default :foreground) . ,(face-attribute 'default :background)))
+
 (setq morning-1 7
       morning-2 14
       afternoon-1 15
@@ -467,7 +468,9 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
   ;; If you're using a vertical completion framework, you might want a more informative completion interface
   (setq org-roam-node-display-template
         (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-  (org-roam-db-autosync-enable))
+  (org-roam-db-autosync-enable)
+  (org-roam-setup)
+  (setq +org-roam-auto-backlinks-buffer t))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
