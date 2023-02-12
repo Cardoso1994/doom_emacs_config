@@ -252,9 +252,10 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;;   Vterm
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; open vterm buffer in pwd
-;; (map! :leader (:n "o T" nil
-;;                :n "o t" nil
-;;                :desc "open Vterm buffer in pwd" :n "o t" #'+eshell/here))
+(map! :leader (:n "o T" nil
+               :n "o t" nil
+               :desc "open Vterm buffer in pwd" :n "o t" #'+vterm/here
+               :desc "open Vterm buffer in pwd" :n "o T" #'+vterm/toggle))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
