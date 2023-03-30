@@ -34,7 +34,7 @@
 (setq doom-font (font-spec :family "Gintronic" :size 22 :weight 'normal)
       doom-unicode-font (font-spec :family "JetBrainsMono Nerd Font")
       ;; doom-variable-pitch-font (font-spec :family "Bookerly"))
-      doom-variable-pitch-font (font-spec :family "Bookerly"))
+      doom-variable-pitch-font (font-spec :family "Bookerly" :height 1.1))
 
 (setq doom-font-increment 1
       doom-big-font-increment 0.5
@@ -252,10 +252,11 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;;   Vterm
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; open vterm buffer in pwd
-(map! :leader (:n "o T" nil
-               :n "o t" nil
-               :desc "open Vterm buffer in pwd" :n "o t" #'+vterm/here
-               :desc "open Vterm buffer in pwd" :n "o T" #'+vterm/toggle))
+(setq vterm-shell "/bin/zsh")
+;; (map! :leader (:n "o T" nil
+;;                :n "o t" nil
+;;                :desc "open Vterm buffer in pwd" :n "o t" #'+vterm/here
+;;                :desc "open Vterm buffer in pwd" :n "o T" #'+vterm/toggle))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
