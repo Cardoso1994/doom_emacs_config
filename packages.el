@@ -49,7 +49,12 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 
+;;; Code:
 (package! org-ref)
 (package! mixed-pitch)
 (package! tree-sitter)
 (package! tree-sitter-langs)
+(package! kaolin-themes)
+(package! ef-themes)
+(package! spacemacs-theme)
+;;; packages.el ends here
