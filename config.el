@@ -31,9 +31,10 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "Gintronic" :size 22 :weight 'normal)
+;; (setq doom-font (font-spec :family "Gintronic" :size 22 :weight 'normal)
+(setq doom-font (font-spec :family "Cascadia Code PL" :size 22 :weight 'normal)
       doom-unicode-font (font-spec :family "JetBrainsMono Nerd Font")
-      ;; doom-variable-pitch-font (font-spec :family "Bookerly"))
+      ;; doom-variable-pitch-font (font-spec :family "Montserrat"))
       doom-variable-pitch-font (font-spec :family "Bookerly"))
 
 (setq doom-font-increment 1
@@ -243,19 +244,21 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
         t))
 
 ;; open eshell buffer in pwd
-(map! :leader (:n "o E" nil
-               :n "o e" nil
-               :desc "open Eshell buffer in pwd" :n "o e" #'+eshell/here))
+(map! :leader
+      (:n "o E" nil
+       :n "o e" nil
+       :desc "open Eshell buffer in pwd" :n "o E" #'+eshell/here
+       :desc "open Eshell popup buffer in pwd" :n "o e" #'+eshell/toggle))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   Vterm
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; open vterm buffer in pwd
-(map! :leader (:n "o T" nil
-               :n "o t" nil
-               :desc "open Vterm buffer in pwd" :n "o t" #'+vterm/here
-               :desc "open Vterm buffer in pwd" :n "o T" #'+vterm/toggle))
+;; (map! :leader (:n "o T" nil
+;;                :n "o t" nil
+;;                :desc "open Vterm buffer in pwd" :n "o t" #'+vterm/here
+;;                :desc "open Vterm buffer in pwd" :n "o T" #'+vterm/toggle))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -400,7 +403,8 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
   (setq org-latex-pdf-process
         '("latexmk -pdflatex='pdflatex -interaction nonstopmode' -pdf -bibtex -f %f"))
         ;; '("latexmk -shell-escape -bibtex -f -pdf %f"))
-  (setq org-latex-image-default-option "keepaspectratio")) ;; keep img ratio
+  (setq org-latex-image-default-option "keepaspectratio") ;; keep img ratio
+  (setq bibtex-dialect 'biblatex))
 
 ;; custom latex document-classes for org-latex-export-to-pdf
 (after! ox-latex
@@ -415,6 +419,15 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  ;; Elsevier
+  (add-to-list 'org-latex-classes
+               '("elsevier"
+                 "\\documentclass{elsarticle/elsarticle}
+                  [NO-DEFAULT-PACKAGES]
+                  [NO-PACKAGES]"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
   ;; Definitions is a folder from the mdpi latex template where al tex code is
   ;; located
   (add-to-list 'org-latex-classes
@@ -434,7 +447,14 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
                  ("\\chapter{%s}" . "\\chapter*{%s}")
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+  (add-to-list 'org-latex-classes
+               '("comia" "\\documentclass{llncs}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
 ;; MS Word and Libreoffice
 (setq org-odt-preferred-output-format "docx")
@@ -484,7 +504,9 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;; Org-Ref
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package! org-ref
-  :after org)
+  :after org
+  :config
+  (setq org-ref-default-ref-type "Cref"))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
