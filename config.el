@@ -31,8 +31,8 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-;; (setq doom-font (font-spec :family "Gintronic" :size 22 :weight 'normal)
 (setq doom-font (font-spec :family "Cascadia Code PL" :size 22 :weight 'normal)
+;; (setq doom-font (font-spec :family "MonoLisa" :size 22 :weight 'normal)
       doom-unicode-font (font-spec :family "JetBrainsMono Nerd Font")
       ;; doom-variable-pitch-font (font-spec :family "Montserrat"))
       doom-variable-pitch-font (font-spec :family "Bookerly"))
@@ -110,10 +110,14 @@
       doom-everforest-light-background "soft")
 
 ;; (mac/timed-theme 'doom-solarized-light
-(mac/timed-theme 'doom-everforest-light
-                 'doom-gruvbox-material-light
-                 'doom-everforest
-                 'doom-gruvbox-material)
+;; (mac/timed-theme 'doom-everforest-light
+;;                  'doom-gruvbox-material-light
+;;                  'doom-everforest
+;;                  'doom-gruvbox-material)
+(mac/timed-theme 'kaolin-mono-light
+                 'kaolin-mono-light
+                 'kaolin-mono-dark
+                 'kaolin-mono-dark)
 
 ;; solarized dark configuration
 (custom-theme-set-faces! '(doom-solarized-dark doom-nord doom-one
