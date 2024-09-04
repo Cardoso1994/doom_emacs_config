@@ -31,7 +31,7 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "Cascadia Code PL" :size 22 :weight 'normal)
+(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 23 :weight 'normal)
 ;; (setq doom-font (font-spec :family "MonoLisa" :size 22 :weight 'normal)
       doom-unicode-font (font-spec :family "JetBrainsMono Nerd Font")
       ;; doom-variable-pitch-font (font-spec :family "Montserrat"))
@@ -64,14 +64,14 @@
 ;; `load-theme' function. This is the default:
 ;; (setq doom-theme 'doom-one)
 
-(add-hook! 'doom-load-theme-hook (cmd! (setq pdf-view-midnight-colors `(,(face-attribute 'default :foreground) . ,(face-attribute 'default :background)))))
-(setq pdf-view-midnight-colors `(,(face-attribute 'default :foreground) . ,(face-attribute 'default :background)))
+;; (add-hook! 'doom-load-theme-hook (cmd! (setq pdf-view-midnight-colors `(,(face-attribute 'default :foreground) . ,(face-attribute 'default :background)))))
+;; (setq pdf-view-midnight-colors `(,(face-attribute 'default :foreground) . ,(face-attribute 'default :background)))
 
 (setq morning-1 7
-      morning-2 14
+      morning-2 11
       afternoon-1 15
-      afternoon-2 18
-      late-afternoon-1 19
+      afternoon-2 19
+      late-afternoon-1 20
       late-afternoon-2 22)
 
 (defun mac/timed-theme (&optional morning-theme afternoon-theme
@@ -98,26 +98,20 @@
 
 
 ;; gruvbox-material contrast and palette options
-(setq doom-gruvbox-material-background  "soft"
+(setq doom-gruvbox-material-background  "medium"
       doom-gruvbox-material-palette "material")
 
 ;; gruvbox-material-light contrast and palette options
-(setq doom-gruvbox-material-light-background  "soft"
+(setq doom-gruvbox-material-light-background  "medium"
       doom-gruvbox-material-light-palette "material")
 
 ;; everforest contrast options
-(setq doom-everforest-background  "soft"
-      doom-everforest-light-background "soft")
+(setq doom-everforest-background  "medium"
+      doom-everforest-light-background "medium")
 
 ;; (mac/timed-theme 'doom-solarized-light
-;; (mac/timed-theme 'doom-everforest-light
-;;                  'doom-gruvbox-material-light
-;;                  'doom-everforest
-;;                  'doom-gruvbox-material)
-(mac/timed-theme 'kaolin-mono-light
-                 'kaolin-mono-light
-                 'kaolin-mono-dark
-                 'kaolin-mono-dark)
+(mac/timed-theme 'ef-melissa-light 'ef-melissa-light
+                 'doom-everforest 'doom-gruvbox-material)
 
 ;; solarized dark configuration
 (custom-theme-set-faces! '(doom-solarized-dark doom-nord doom-one
@@ -349,8 +343,10 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 ;; python keybindings
 (map! :map prog-mode-map
       :localleader
-      :desc "Fold blocks" :n "h" #'hs-hide-all
-      :desc "Unfold blocks" :n "o" #'hs-show-all)
+      :desc "Fold all blocks" :n "h" #'hs-hide-all
+      :desc "Fold single block" :n "b h" #'hs-hide-block
+      :desc "Unfold all blocks" :n "o" #'hs-show-all
+      :desc "Unfold single block" :n "b o" #'hs-show-block)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Mixed Pitch
@@ -366,7 +362,7 @@ eshell-default-prompt-fn. Use for `eshell-prompt-function'."
 (setq +latex-viewers '(zathura)
       pdf-view-resize-factor 1.05)
 ;; pdf tools midnight mode when opening a pdf
-(add-hook! 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode)
+;; (add-hook! 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode)
 
 
 

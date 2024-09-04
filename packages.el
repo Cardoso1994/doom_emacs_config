@@ -57,4 +57,6 @@
 (package! kaolin-themes)
 (package! ef-themes)
 (package! spacemacs-theme)
+;; (package! copilot
+;;   :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el" "dist")))
 ;;; packages.el ends here
